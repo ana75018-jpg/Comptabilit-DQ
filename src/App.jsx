@@ -1071,7 +1071,7 @@ function PageDeclarer({user,onAdd}){
   const [cartNV,setCartNV]=useState("");      // cartons produits non vendus (Or uniquement, info seule)
   const [ok,setOk]=useState(false);
   const isOr=user.minerai==="Or";
-  const prix=(PRICES_INIT[user.minerai]||{})[user.grade]||0;
+  const prix=(PRICES[user.minerai]||{})[user.grade]||0;
   const qN=Number(qte)||0;
   const vN=Number(ventesC)||0;   // ventes cartons = exports ET bonus salaire
   const nvN=Number(cartNV)||0;   // non vendus = info seulement, pas d'impact calcul
