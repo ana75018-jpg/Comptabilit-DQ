@@ -1,0 +1,5408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Davis Quartz — Gestion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=IBM+Plex+Mono:wght@400;500&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=IBM+Plex+Mono:wght@400;500&family=Barlow+Condensed:wght@400;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%;background:#1A0F07}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#1A0F07}
+::-webkit-scrollbar-thumb{background:rgba(212,160,23,.3);border-radius:3px}
+.dqR:nth-child(even){background:#221407}
+.dqR:nth-child(odd){background:#2A1A0A}
+.dqR:hover{background:rgba(212,160,23,.07)!important}
+td input,td select{background:transparent;border:none;color:#EDD9A3;font-family:'Barlow Condensed',sans-serif;font-size:14px;width:100%;outline:none;padding:2px 3px;border-radius:2px;transition:background .15s}
+td input:focus,td select:focus{background:rgba(212,160,23,.1);outline:1px solid rgba(212,160,23,.4)}
+td input[type=number]{font-family:'IBM Plex Mono',monospace;font-size:12px}
+td input[type=checkbox]{width:auto;accent-color:#D4A017;transform:scale(1.2);cursor:pointer}
+td select option{background:#2C1A0E;color:#EDD9A3}
+.fbtn{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 9px;border-radius:2px;border:1px solid rgba(212,160,23,.22);background:transparent;color:#9A7B55;cursor:pointer;transition:all .15s;white-space:nowrap}
+.fbtn:hover,.fbtn.on{color:#D4A017;background:rgba(212,160,23,.1);border-color:#D4A017}
+.fbtn.c-Charbon.on{background:rgba(88,100,109,.25);border-color:#8fa8b3;color:#adbbc4}
+.fbtn.c-Fer.on{background:rgba(138,180,160,.2);border-color:#8ab4a0;color:#8ab4a0}
+.fbtn.c-Cuivre.on{background:rgba(200,121,65,.2);border-color:#c87941;color:#c87941}
+.fbtn.c-Or.on{background:rgba(212,160,23,.2);border-color:#d4a017;color:#d4a017}
+.fbtn.c-Aluminium.on{background:rgba(126,184,201,.2);border-color:#7EB8C9;color:#7EB8C9}
+.fbtn.c-Direction.on{background:rgba(184,64,64,.2);border-color:#B84040;color:#d47070}
+.sbadge{display:inline-block;padding:2px 8px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.sb-nouveau{background:rgba(90,140,74,.2);color:#7dba65;border:1px solid rgba(90,140,74,.4)}
+.sb-absent{background:rgba(91,127,166,.2);color:#8aabcc;border:1px solid rgba(91,127,166,.4)}
+.sb-avertissement{background:rgba(212,160,23,.15);color:#D4A017;border:1px solid rgba(212,160,23,.35)}
+.sb-licenci{background:rgba(184,64,64,.18);color:#d47070;border:1px solid rgba(184,64,64,.35)}
+.sb-demission{background:rgba(100,60,10,.3);color:#d4956a;border:1px solid rgba(180,100,30,.4)}
+.sb-up{background:rgba(200,121,42,.18);color:#e09a5a;border:1px solid rgba(200,121,42,.4)}
+.sb-ok{background:rgba(90,140,74,.12);color:#7dba65;border:1px solid rgba(90,140,74,.25)}
+.sb-prime{background:rgba(122,92,140,.2);color:#b899d4;border:1px solid rgba(122,92,140,.4)}
+.delbtn{background:none;border:none;color:rgba(184,64,64,.35);cursor:pointer;padding:2px 5px;font-size:15px;border-radius:2px;transition:all .15s;line-height:1}
+.delbtn:hover{color:#B84040;background:rgba(184,64,64,.12)}
+.eff-bw{height:5px;background:rgba(212,160,23,.1);border-radius:3px;overflow:hidden;margin-bottom:3px}
+.eff-b{height:100%;border-radius:3px;transition:width .4s}
+.eff-gp{background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.22);border-radius:2px;padding:1px 5px;white-space:nowrap;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#9A7B55}
+.dq-nav{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;border-left:3px solid transparent;font-size:13px;letter-spacing:1px;text-transform:uppercase;transition:all .15s;color:#9A7B55}
+.dq-nav:hover{color:#F5E6C8;background:rgba(212,160,23,.07)}
+.dq-nav.act{border-left-color:#D4A017;background:rgba(212,160,23,.1);color:#D4A017;font-weight:700}
+.inp{background:rgba(212,160,23,.07);border:1px solid rgba(212,160,23,.22);border-radius:3px;color:#EDD9A3;font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:7px 10px;outline:none;width:100%;box-sizing:border-box;transition:border-color .15s}
+.inp:focus{border-color:#D4A017}
+.sel{background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:3px;color:#EDD9A3;font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:7px 10px;outline:none;cursor:pointer}
+.sel option{background:#2C1A0E}
+.btnP{background:linear-gradient(135deg,#D4A017,#b8860b);border:none;color:#1A0F07;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btnP:hover{filter:brightness(1.1);box-shadow:0 0 14px rgba(212,160,23,.4)}
+.btnG{background:transparent;border:1px solid rgba(212,160,23,.22);color:#9A7B55;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btnG:hover{color:#EDD9A3;border-color:#D4A017}
+.pitem{display:flex;flex-direction:column;gap:3px;padding:5px 0;border-bottom:1px solid rgba(212,160,23,.06)}
+.pitem:last-child{border-bottom:none}
+.sritem{display:flex;align-items:flex-start;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(212,160,23,.06)}
+.sritem:last-child{border-bottom:none}
+.fitem,.pritem{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(212,160,23,.06);font-size:12px}
+.fitem:last-child,.pritem:last-child{border-bottom:none}
+.rcard{background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:5px;padding:11px 13px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .18s;position:relative}
+.rcard:hover{border-color:#D4A017;background:rgba(212,160,23,.05);transform:translateY(-1px)}
+.rcard.added{border-color:#5A8C4A;background:rgba(52,168,83,.05)}
+.rcard.added::after{content:"✓";position:absolute;top:7px;right:9px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5A8C4A;background:rgba(52,168,83,.15);padding:1px 6px;border-radius:2px}
+.rdelbtn{position:absolute;top:5px;right:5px;background:none;border:none;color:rgba(184,64,64,.3);cursor:pointer;font-size:15px;line-height:1;padding:2px 5px;border-radius:2px;transition:all .15s;z-index:2}
+.rdelbtn:hover{color:#B84040;background:rgba(184,64,64,.15)}
+.archcard{background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:5px;overflow:hidden;margin-bottom:10px;transition:border-color .15s}
+.archcard:hover{border-color:rgba(212,160,23,.5)}
+.avcrd{background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:5px;overflow:hidden;margin-bottom:10px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:7px;width:480px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7)}
+.mhdr{background:#3D2510;padding:13px 20px;font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid rgba(212,160,23,.22);display:flex;justify-content:space-between;align-items:center}
+.mbody{padding:20px}
+.mftr{padding:12px 20px;display:flex;justify-content:flex-end;gap:8px;border-top:1px solid rgba(212,160,23,.22)}
+.cbtn{background:none;border:none;color:#9A7B55;font-size:20px;cursor:pointer;line-height:1;transition:color .15s}
+.cbtn:hover{color:#F5E6C8}
+.twrap{border:1px solid rgba(212,160,23,.22);border-radius:4px;overflow:auto;background:#2A1A0A;box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(212,160,23,.08)}
+table{width:100%;border-collapse:collapse;min-width:960px}
+thead tr{background:linear-gradient(180deg,#2C1A0E,#221407);border-bottom:2px solid #D4A017}
+th{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9A7B55;padding:10px 8px;text-align:left;white-space:nowrap;user-select:none}
+td{padding:7px 8px;vertical-align:middle;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:#EDD9A3}
+.tbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tc{flex:1;min-width:110px;background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:4px;padding:10px 14px}
+.tc .tl{font-size:9px;letter-spacing:2px;color:#9A7B55;text-transform:uppercase}
+.tc .tv{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500;color:#D4A017;margin-top:2px}
+.tv.g{color:#5A8C4A}.tv.y{color:#D4A017}.tv.cu{color:#C8792A}.tv.pu{color:#ce93d8}
+.panel{background:#2C1A0E;border:1px solid rgba(212,160,23,.22);border-radius:5px;overflow:hidden}
+.phdr{background:#3D2510;padding:8px 14px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:3px;color:#D4A017;text-transform:uppercase;border-bottom:1px solid rgba(212,160,23,.22)}
+.pbody{padding:8px 12px}
+.empty{text-align:center;padding:20px;color:#9A7B55;font-size:11px;letter-spacing:1px}
+.ac-list{position:absolute;top:100%;left:0;right:0;background:#4A2E14;border:1px solid #D4A017;border-radius:0 0 4px 4px;z-index:50;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.ac-item{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(212,160,23,.22);transition:background .1s}
+.ac-item:hover{background:rgba(212,160,23,.1)}
+.ac-item:last-child{border-bottom:none}
+.sbox{margin:0 12px 8px;background:rgba(212,160,23,.07);border:1px solid rgba(212,160,23,.2);border-radius:4px;padding:10px 12px}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:4px 16px;font-size:13px}
+.bg-tex{background-image:radial-gradient(ellipse at 50% 0%,rgba(212,160,23,.06) 0%,transparent 60%)}
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+(function() {
+  const { useState, useMemo, useRef, useEffect } = React;
+
+// ════════════════════════════════════════════════
+// DAVIS QUARTZ — Application Complète v3
+// Partie A (Semaine) + Partie B (toutes les pages)
+// ════════════════════════════════════════════════
+
+// ── Constantes ───────────────────────────────────
+const PRICES = {
+  Charbon: {
+    Stagiaire: 1.7,
+    Confirmé: 2.1,
+    Expérimenté: 2.5
+  },
+  Fer: {
+    Stagiaire: 5.903,
+    Confirmé: 7.292,
+    Expérimenté: 8.6805
+  },
+  Cuivre: {
+    Stagiaire: 3.594,
+    Confirmé: 4.4396,
+    Expérimenté: 5.2855
+  },
+  Or: {
+    Stagiaire: 4.775,
+    Confirmé: 5.899,
+    Expérimenté: 7.0225
+  },
+  Aluminium: {
+    Stagiaire: 3.72,
+    Confirmé: 3.36,
+    Expérimenté: 4.0
+  }
+};
+const CAP = {
+  Stagiaire: 11000,
+  Confirmé: 13000,
+  Expérimenté: 15000
+};
+const DIR_SAL = {
+  Patronne: 20000,
+  "Co Patron": 20000,
+  "Lead Manager": 18000,
+  Manager: 18000,
+  RH: 18000
+};
+const QUOTAS = {
+  Charbon: 5000,
+  Fer: 1440,
+  Cuivre: 2365,
+  Or: 890,
+  Aluminium: 3125
+};
+const CAT_MAX = {
+  Charbon: 11,
+  Fer: 23,
+  Cuivre: 20,
+  Or: 10,
+  Aluminium: 11
+};
+const CAT_COL = {
+  Direction: "#EA4335",
+  Charbon: "#8fa8b3",
+  Fer: "#8ab4a0",
+  Cuivre: "#c87941",
+  Or: "#d4a017",
+  Aluminium: "#7EB8C9"
+};
+const CAT_ORDER = ["Direction", "Charbon", "Fer", "Cuivre", "Or", "Aluminium"];
+const GRADE_UP = {
+  Stagiaire: "Confirmé",
+  Confirmé: "Expérimenté",
+  Expérimenté: "Expérimenté"
+};
+const GRADE_DIR_UP = {
+  Stagiaire: "RH",
+  RH: "Manager",
+  Manager: "Lead Manager",
+  "Lead Manager": "Patronne",
+  "Co Patron": "Patronne",
+  Patronne: "Patronne"
+};
+const CARTON_UNIT = 25;
+const CARTON_RECAP = 100;
+const STATUS_OPTS = ["", "Nouveau", "Absent", "Avertissement", "Licencié", "Démission", "Up", "OK", "Prime"];
+const STATUS_COLOR = {
+  Nouveau: {
+    border: "#5A8C4A",
+    bg: "rgba(90,140,74,.10)",
+    text: "#7dba65"
+  },
+  Absent: {
+    border: "#5B7FA6",
+    bg: "rgba(91,127,166,.10)",
+    text: "#8aabcc"
+  },
+  Avertissement: {
+    border: "#D4A017",
+    bg: "rgba(212,160,23,.10)",
+    text: "#D4A017"
+  },
+  Licencié: {
+    border: "#B84040",
+    bg: "rgba(184,64,64,.10)",
+    text: "#d47070"
+  },
+  Démission: {
+    border: "#8B5E3C",
+    bg: "rgba(139,94,60,.12)",
+    text: "#d4956a"
+  },
+  Up: {
+    border: "#C8792A",
+    bg: "rgba(200,121,42,.10)",
+    text: "#e09a5a"
+  },
+  OK: {
+    border: "#5A8C4A",
+    bg: "rgba(90,140,74,.06)",
+    text: "#7dba65"
+  },
+  Prime: {
+    border: "#7A5C8C",
+    bg: "rgba(122,92,140,.12)",
+    text: "#b899d4"
+  }
+};
+const DQ = {
+  darker: "#1A0F07",
+  dark: "#2C1A0E",
+  mid: "#3D2510",
+  panel: "#4A2E14",
+  accent: "#D4A017",
+  accent2: "#C8792A",
+  muted: "#9A7B55",
+  text: "#EDD9A3",
+  white: "#F5E6C8",
+  border: "rgba(212,160,23,0.22)",
+  green: "#5A8C4A",
+  red: "#B84040",
+  blue: "#5B7FA6",
+  purple: "#7A5C8C"
+};
+const MINERAIS = ["Charbon", "Fer", "Cuivre", "Or", "Aluminium"];
+
+// ── Helpers ──────────────────────────────────────
+const fmt = n => (n || 0).toLocaleString("fr-FR");
+const fmtDate = d => {
+  const dt = new Date(d);
+  return dt.toLocaleDateString("fr-FR") + " " + dt.toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+};
+const today = () => new Date().toLocaleDateString("fr-FR");
+const scls = s => s ? s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]/g, "") : "";
+function calcSal(m, P = PRICES, C = CAP, D = DIR_SAL) {
+  if (!m) return 0;
+  if (m.categorie === "Direction") return D[m.grade] || 18000;
+  const p = (P[m.categorie] || {})[m.grade] || 0;
+  const cap = C[m.grade] || 15000;
+  return Math.round(Math.min(p * (m.quantite || 0) + Math.floor((m.exports || 0) / 100) * 2500, cap));
+}
+function calcSalD(qte, cartons, minerai, grade, P = PRICES, C = CAP) {
+  const p = (P[minerai] || {})[grade] || 0;
+  const bonus = Math.floor((cartons || 0) / 100) * 2500;
+  return Math.round(Math.min(p * (qte || 0) + bonus, C[grade] || 15000));
+}
+function mkRow(r) {
+  return {
+    casier: r.casier,
+    categorie: r.cat,
+    grade: r.grade,
+    nom: r.nom,
+    menus: false,
+    exports: 0,
+    quantite: 0,
+    frais: 0,
+    prime: 0,
+    status: "",
+    commentaire: ""
+  };
+}
+function sbCls(s) {
+  const m = {
+    Nouveau: "sbn",
+    Absent: "sba",
+    Avertissement: "sbav",
+    Licencié: "sbl",
+    Démission: "sbd",
+    Up: "sbu",
+    OK: "sbok",
+    Prime: "sbp"
+  };
+  return "sbadge " + (m[s] || "");
+}
+
+// ── Données initiales ───────────────────────────
+const ROSTER_FULL = [{
+  casier: "1",
+  cat: "Direction",
+  grade: "Patronne",
+  nom: "Kayla Moreno"
+}, {
+  casier: "2",
+  cat: "Direction",
+  grade: "Lead Manager",
+  nom: "Marc Assin"
+}, {
+  casier: "3",
+  cat: "Direction",
+  grade: "Manager",
+  nom: "Wyatt Scott"
+}, {
+  casier: "4",
+  cat: "Direction",
+  grade: "RH",
+  nom: "Valentina Carmona"
+}, {
+  casier: "5",
+  cat: "Direction",
+  grade: "RH",
+  nom: "Benjamin Johnson"
+}, {
+  casier: "52",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Jayden Reed"
+}, {
+  casier: "10",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Aaron Olsen"
+}, {
+  casier: "80",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Sacha Parker"
+}, {
+  casier: "44",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Toma Pachysse"
+}, {
+  casier: "53",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Carlos Distevia"
+}, {
+  casier: "07",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Jesse O'Ree"
+}, {
+  casier: "38",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Jabari Shepard"
+}, {
+  casier: "45",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Ace Andersonne"
+}, {
+  casier: "51",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Logan Cross"
+}, {
+  casier: "57",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Loucas Planckeel"
+}, {
+  casier: "59",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Logan Martin"
+}, {
+  casier: "36",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Isao Nakamoto"
+}, {
+  casier: "33",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Misaki Sakamoto"
+}, {
+  casier: "40",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Marc Mozarella"
+}, {
+  casier: "39",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Sandro Moro"
+}, {
+  casier: "78",
+  cat: "Charbon",
+  grade: "Expérimenté",
+  nom: "Horacio Kavera"
+}, {
+  casier: "63",
+  cat: "Charbon",
+  grade: "Confirmé",
+  nom: "Gibril Lowner"
+}, {
+  casier: "49",
+  cat: "Charbon",
+  grade: "Stagiaire",
+  nom: "Hannah Diaz"
+}, {
+  casier: "46",
+  cat: "Charbon",
+  grade: "Stagiaire",
+  nom: "Alejandro Jimenez"
+}, {
+  casier: "16",
+  cat: "Charbon",
+  grade: "Stagiaire",
+  nom: "Issa Blackys"
+}, {
+  casier: "75",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Josh Lewis"
+}, {
+  casier: "35",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Jude Olsen"
+}, {
+  casier: "54",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Matheo Taka"
+}, {
+  casier: "42",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Akram Djils"
+}, {
+  casier: "18",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Yori Tamagotchi"
+}, {
+  casier: "55",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Jessica Wood"
+}, {
+  casier: "29",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Davy Brival"
+}, {
+  casier: "48",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Hector Reyes"
+}, {
+  casier: "60",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Emy Wilsonn"
+}, {
+  casier: "27",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Doula Ham"
+}, {
+  casier: "17",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Juan Carlos Gonzalez"
+}, {
+  casier: "19",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Cameron Davis"
+}, {
+  casier: "23",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Ethan Monkass"
+}, {
+  casier: "62",
+  cat: "Fer",
+  grade: "Expérimenté",
+  nom: "Teddy Carlton"
+}, {
+  casier: "66",
+  cat: "Fer",
+  grade: "Confirmé",
+  nom: "Brandon Cortez"
+}, {
+  casier: "43",
+  cat: "Fer",
+  grade: "Confirmé",
+  nom: "Tyson Brooks"
+}, {
+  casier: "79",
+  cat: "Fer",
+  grade: "Confirmé",
+  nom: "Matheo Mendez"
+}, {
+  casier: "15",
+  cat: "Fer",
+  grade: "Stagiaire",
+  nom: "Brad Kenan"
+}, {
+  casier: "71",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Rafael Dawnson"
+}, {
+  casier: "37",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Mike Fosh"
+}, {
+  casier: "67",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Gustavo Carrera"
+}, {
+  casier: "14",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Ayrton Junior"
+}, {
+  casier: "13",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Davis Miller"
+}, {
+  casier: "12",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Kendrick Robinson"
+}, {
+  casier: "34",
+  cat: "Cuivre",
+  grade: "Expérimenté",
+  nom: "Juan Rojas"
+}, {
+  casier: "28",
+  cat: "Cuivre",
+  grade: "Confirmé",
+  nom: "Hun-Ji San"
+}, {
+  casier: "61",
+  cat: "Cuivre",
+  grade: "Confirmé",
+  nom: "Carol Carter"
+}, {
+  casier: "06",
+  cat: "Cuivre",
+  grade: "Stagiaire",
+  nom: "Salazar Cordoba"
+}, {
+  casier: "24",
+  cat: "Cuivre",
+  grade: "Stagiaire",
+  nom: "Anderson Diaz"
+}, {
+  casier: "20",
+  cat: "Cuivre",
+  grade: "Stagiaire",
+  nom: "Rico Freez"
+}, {
+  casier: "76",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Riley West"
+}, {
+  casier: "30",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Jordan Wallace"
+}, {
+  casier: "74",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Tonio Madrino"
+}, {
+  casier: "47",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Luis Abelli"
+}, {
+  casier: "11",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Pang Woo"
+}, {
+  casier: "56",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Adler Rewan"
+}, {
+  casier: "31",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Jaden Carter"
+}, {
+  casier: "64",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Riley Frost"
+}, {
+  casier: "22",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Iris Morales"
+}, {
+  casier: "72",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Nashon Lowe"
+}, {
+  casier: "58",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Ryu Watson"
+}, {
+  casier: "25",
+  cat: "Or",
+  grade: "Expérimenté",
+  nom: "Tyquan Lewis"
+}, {
+  casier: "65",
+  cat: "Or",
+  grade: "Confirmé",
+  nom: "Nella Rose"
+}, {
+  casier: "21",
+  cat: "Or",
+  grade: "Stagiaire",
+  nom: "William O'Connor"
+}, {
+  casier: "26",
+  cat: "Or",
+  grade: "Stagiaire",
+  nom: "Yvan Serrano"
+}, {
+  casier: "41",
+  cat: "Aluminium",
+  grade: "Expérimenté",
+  nom: "Milo Jenkins"
+}, {
+  casier: "32",
+  cat: "Aluminium",
+  grade: "Expérimenté",
+  nom: "Blake Carrington"
+}, {
+  casier: "50",
+  cat: "Aluminium",
+  grade: "Expérimenté",
+  nom: "Maya Luna"
+}, {
+  casier: "73",
+  cat: "Aluminium",
+  grade: "Stagiaire",
+  nom: "Elijah Serrano"
+}, {
+  casier: "77",
+  cat: "Aluminium",
+  grade: "Stagiaire",
+  nom: "Armando Alvarèz"
+}];
+const COMPTES_INIT = [{
+  id: 1,
+  nom: "Moreno",
+  prenom: "Kayla",
+  login: "direction",
+  mdp: "admin",
+  role: "direction",
+  minerai: null,
+  grade: null
+}, {
+  id: 2,
+  nom: "Assin",
+  prenom: "Marc",
+  login: "gestion",
+  mdp: "admin",
+  role: "gestion",
+  minerai: null,
+  grade: null
+}, {
+  id: 7,
+  nom: "O'Ree",
+  prenom: "Jesse",
+  login: "jesse",
+  mdp: "emp",
+  role: "employe",
+  minerai: "Charbon",
+  grade: "Expérimenté"
+}, {
+  id: 10,
+  nom: "Olsen",
+  prenom: "Aaron",
+  login: "aaron",
+  mdp: "emp",
+  role: "employe",
+  minerai: "Charbon",
+  grade: "Expérimenté"
+}, {
+  id: 56,
+  nom: "Rewan",
+  prenom: "Adler",
+  login: "adler",
+  mdp: "emp",
+  role: "employe",
+  minerai: "Or",
+  grade: "Expérimenté"
+}, {
+  id: 42,
+  nom: "Djils",
+  prenom: "Akram",
+  login: "akram",
+  mdp: "emp",
+  role: "employe",
+  minerai: "Fer",
+  grade: "Expérimenté"
+}];
+const DECLS_INIT = [{
+  id: 1,
+  date: "2026-05-31T18:59",
+  employeId: 10,
+  minerai: "Charbon",
+  grade: "Expérimenté",
+  qte: 2472,
+  cartons: 0
+}, {
+  id: 2,
+  date: "2026-05-31T18:04",
+  employeId: 7,
+  minerai: "Charbon",
+  grade: "Expérimenté",
+  qte: 1836,
+  cartons: 0
+}, {
+  id: 3,
+  date: "2026-05-31T17:46",
+  employeId: 56,
+  minerai: "Or",
+  grade: "Expérimenté",
+  qte: 903,
+  cartons: 12
+}, {
+  id: 4,
+  date: "2026-05-31T17:28",
+  employeId: 42,
+  minerai: "Fer",
+  grade: "Expérimenté",
+  qte: 580,
+  cartons: 0
+}, {
+  id: 5,
+  date: "2026-05-30T14:22",
+  employeId: 56,
+  minerai: "Or",
+  grade: "Expérimenté",
+  qte: 935,
+  cartons: 8
+}, {
+  id: 6,
+  date: "2026-05-30T11:05",
+  employeId: 42,
+  minerai: "Fer",
+  grade: "Expérimenté",
+  qte: 1500,
+  cartons: 0
+}];
+const COMPTA_INIT = {
+  chiffreAffaires: 0,
+  autresEntrees: 0,
+  donsRecus: 0,
+  decoration: 0,
+  subventions: 0,
+  masseSalariale: 59000,
+  matieresPremières: 4733,
+  fraisAvocats: 0,
+  fraisComptables: 0,
+  locations: 0,
+  fraisVehicules: 0,
+  nourriture: 0,
+  donsEffectues: 0,
+  locsNonDed: 0,
+  vehiculesNonDed: 0,
+  autresNonDed: 0,
+  impots: 0
+};
+const CHAT_INIT = [{
+  id: 1,
+  from: 1,
+  text: "Prise de service — bonne semaine à tous.",
+  date: "2026-05-31T08:00",
+  role: "direction"
+}, {
+  id: 2,
+  from: 7,
+  text: "Présent, on démarre le charbon.",
+  date: "2026-05-31T08:05",
+  role: "employe"
+}, {
+  id: 3,
+  from: 2,
+  text: "Rappel : déclarations avant 19h ce soir.",
+  date: "2026-05-31T09:00",
+  role: "gestion"
+}, {
+  id: 4,
+  from: 56,
+  text: "Bons exports sur l'or cette semaine !",
+  date: "2026-05-31T14:30",
+  role: "employe"
+}];
+
+
+// ── Semaine ───────────────────────────────────────
+function PageSemaine({
+  weeks,
+  setWeeks,
+  curIdx,
+  setCurIdx,
+  roster,
+  setRoster,
+  role
+}) {
+  const [fc, setFc] = useState("all");
+  const [fg, setFg] = useState("all");
+  const [srch, setSrch] = useState("");
+  const [showNW, setShowNW] = useState(false);
+  const [newNum, setNewNum] = useState("");
+  const [qsOpen, setQsOpen] = useState(false);
+  const [qs, setQs] = useState("");
+  const [showSal, setShowSal] = useState(false);
+  const [salD, setSalD] = useState(null);
+  const [localPrices, setLocalPrices] = useState(PRICES);
+  const [localCap, setLocalCap] = useState(CAP);
+  const [localDirSal, setLocalDirSal] = useState(DIR_SAL);
+  const cw = weeks[curIdx] || {
+    num: "?",
+    date: "",
+    data: [],
+    locked: false
+  };
+  const isArch = curIdx < weeks.length - 1 && cw.locked !== false;
+  const canEdit = !isArch || role === "direction";
+  const DGO = ["Patronne", "Co Patron", "Lead Manager", "Manager", "RH"];
+  const GFO = ["Expérimenté", "Confirmé", "Stagiaire"];
+  function calcSalLocal(m) {
+    if (!m) return 0;
+    if (m.categorie === "Direction") return localDirSal[m.grade] || 18000;
+    const p = (localPrices[m.categorie] || {})[m.grade] || 0;
+    const cap = localCap[m.grade] || 15000;
+    return Math.round(Math.min(p * (m.quantite || 0) + Math.floor((m.exports || 0) / 100) * 2500, cap));
+  }
+  const filtered = useMemo(() => {
+    let d = [...cw.data];
+    if (fc !== "all") d = d.filter(m => m.categorie === fc);
+    if (fg !== "all") d = d.filter(m => m.grade === fg);
+    if (srch) d = d.filter(m => (m.nom || "").toLowerCase().includes(srch.toLowerCase()) || (m.casier || "").includes(srch));
+    d.sort((a, b) => {
+      const ia = CAT_ORDER.indexOf(a.categorie),
+        ib = CAT_ORDER.indexOf(b.categorie);
+      if (ia !== ib) return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+      if (a.categorie === "Direction") {
+        const ga = DGO.indexOf(a.grade),
+          gb = DGO.indexOf(b.grade);
+        return (ga < 0 ? 99 : ga) - (gb < 0 ? 99 : gb);
+      }
+      const ga = GFO.indexOf(a.grade),
+        gb = GFO.indexOf(b.grade);
+      return (ga < 0 ? 99 : ga) - (gb < 0 ? 99 : gb);
+    });
+    return d;
+  }, [cw.data, fc, fg, srch]);
+  function updW(ws) {
+    setWeeks(ws);
+  }
+  function updRow(casier, k, v) {
+    const nw = weeks.map((w, i) => i !== curIdx ? w : {
+      ...w,
+      data: w.data.map(m => {
+        if (m.casier !== casier) return m;
+        const nm = {
+          ...m,
+          [k]: v
+        };
+        if (k === "status") {
+          if (v === "Démission") {
+            nm._oldCat = m.categorie;
+            nm._oldGrade = m.grade;
+            nm.categorie = "—";
+            nm.grade = "—";
+          } else if (m._oldCat && v !== "Démission") {
+            nm.categorie = m._oldCat;
+            nm.grade = m._oldGrade;
+            delete nm._oldCat;
+            delete nm._oldGrade;
+          }
+        }
+        if ((k === "grade" || k === "categorie") && m.casier) {
+          const ri = roster.findIndex(r => r.casier === m.casier);
+          if (ri >= 0) {
+            const nr = [...roster];
+            nr[ri] = {
+              ...nr[ri],
+              [k === "grade" ? "grade" : "cat"]: v
+            };
+            setRoster(nr);
+          }
+        }
+        return nm;
+      })
+    });
+    updW(nw);
+  }
+  function delRow(casier) {
+    if (!canEdit) return;
+    updW(weeks.map((w, i) => i !== curIdx ? w : {
+      ...w,
+      data: w.data.filter(m => m.casier !== casier)
+    }));
+  }
+  function addFromRoster(r) {
+    if (cw.data.find(m => m.casier === r.casier)) return;
+    const nm = mkRow(r);
+    updW(weeks.map((w, i) => i !== curIdx ? w : {
+      ...w,
+      data: [...w.data, nm]
+    }));
+    setQsOpen(false);
+    setQs("");
+  }
+  function clearWeek() {
+    if (!canEdit) return;
+    updW(weeks.map((w, i) => i !== curIdx ? w : {
+      ...w,
+      data: []
+    }));
+  }
+  function navWeek(d) {
+    const ni = Math.max(0, Math.min(weeks.length - 1, curIdx + d));
+    setCurIdx(ni);
+  }
+  function openNW() {
+    const n = parseInt(cw.num || "0");
+    setNewNum(isNaN(n) ? "" : String(n + 1).padStart(2, "0"));
+    setShowNW(true);
+  }
+  function confirmNW() {
+    const num = newNum.trim() || "?";
+    const nws = [...weeks];
+    nws[curIdx] = {
+      ...nws[curIdx],
+      locked: true
+    };
+    const nr = [...roster];
+    nws[curIdx].data.forEach(m => {
+      if (m.status === "Up" && m.casier) {
+        const ri = nr.findIndex(r => r.casier === m.casier);
+        if (ri >= 0) {
+          const g = nr[ri].cat === "Direction" ? GRADE_DIR_UP[nr[ri].grade] || nr[ri].grade : GRADE_UP[nr[ri].grade] || nr[ri].grade;
+          nr[ri] = {
+            ...nr[ri],
+            grade: g
+          };
+        }
+      }
+      if ((m.status === "Licencié" || m.status === "Démission") && m.casier) {
+        const ri = nr.findIndex(r => r.casier === m.casier);
+        if (ri >= 0) nr.splice(ri, 1);
+      }
+    });
+    setRoster(nr);
+    const nd = nr.map(r => mkRow(r));
+    nws.push({
+      num,
+      date: today(),
+      data: nd,
+      locked: false
+    });
+    setWeeks(nws);
+    setCurIdx(nws.length - 1);
+    setShowNW(false);
+  }
+  function exportCSV() {
+    const rows = [["Cat", "Grade", "Nom", "Casier", "Payer", "Exports", "CA", "Qté", "Salaire", "Frais", "Prime", "Status", "Note"], ...cw.data.map(m => [m.categorie, m.grade, m.nom, m.casier, m.menus ? "Oui" : "Non", m.exports || 0, (m.exports || 0) * CARTON_UNIT, m.quantite || 0, calcSalLocal(m), m.frais || 0, m.prime || 0, m.status, m.commentaire])];
+    const csv = rows.map(r => r.join(";")).join("\n");
+    const a = document.createElement("a");
+    a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+    a.download = `DQ_Sem${cw.num}.csv`;
+    a.click();
+  }
+  const totAct = filtered.filter(m => m.status !== "Absent" && m.status !== "Licencié").length;
+  const totExp = filtered.reduce((s, m) => s + (m.exports || 0), 0);
+  const totCA = filtered.reduce((s, m) => s + (m.exports || 0) * 100, 0); // barre totaux : 1 carton = 100$
+  const totQty = filtered.reduce((s, m) => s + (m.quantite || 0), 0);
+  const totSal = filtered.reduce((s, m) => s + calcSalLocal(m), 0);
+  const totFrais = filtered.reduce((s, m) => s + (m.frais || 0), 0);
+  const totPrime = filtered.reduce((s, m) => s + (m.prime || 0), 0);
+  const qsFil = qs.length > 1 ? roster.filter(r => (r.nom || "").toLowerCase().includes(qs.toLowerCase()) || (r.casier || "").includes(qs)).slice(0, 8) : [];
+  const addedSet = new Set(cw.data.map(m => m.casier));
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      marginBottom: 10,
+      flexWrap: "wrap"
+    }
+  }, isArch && role === "direction" && /*#__PURE__*/React.createElement("button", {
+    onClick: () => setWeeks(ws => ws.map((w, i) => i === curIdx ? {
+      ...w,
+      locked: false
+    } : w)),
+    style: {
+      fontFamily: "'Barlow Condensed',sans-serif",
+      fontSize: 11,
+      fontWeight: 700,
+      letterSpacing: 1,
+      textTransform: "uppercase",
+      color: DQ.accent,
+      background: "rgba(212,160,23,.1)",
+      border: "1px solid rgba(212,160,23,.3)",
+      borderRadius: 3,
+      padding: "4px 10px",
+      cursor: "pointer"
+    }
+  }, "\uD83D\uDD13 D\xE9verrouiller"), isArch && role !== "direction" && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 10,
+      letterSpacing: 1,
+      color: "#d47070",
+      background: "rgba(184,64,64,.15)",
+      border: "1px solid rgba(184,64,64,.3)",
+      borderRadius: 3,
+      padding: "2px 8px"
+    }
+  }, "Lecture seule"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      background: "rgba(212,160,23,.08)",
+      border: "1px solid rgba(212,160,23,.3)",
+      borderRadius: 4,
+      padding: "4px 8px"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => navWeek(-1),
+    disabled: curIdx <= 0,
+    style: {
+      background: "none",
+      border: "none",
+      color: DQ.muted,
+      fontSize: 18,
+      cursor: "pointer",
+      padding: "2px 6px",
+      lineHeight: 1,
+      opacity: curIdx <= 0 ? .3 : 1
+    }
+  }, "\u2039"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 13,
+      fontWeight: 500,
+      color: DQ.accent,
+      minWidth: 90,
+      textAlign: "center",
+      padding: "0 6px"
+    }
+  }, "SEM. ", cw.num || "?"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => navWeek(1),
+    disabled: curIdx >= weeks.length - 1,
+    style: {
+      background: "none",
+      border: "none",
+      color: DQ.muted,
+      fontSize: 18,
+      cursor: "pointer",
+      padding: "2px 6px",
+      lineHeight: 1,
+      opacity: curIdx >= weeks.length - 1 ? .3 : 1
+    }
+  }, "\u203A"), /*#__PURE__*/React.createElement("button", {
+    onClick: isArch ? () => setCurIdx(weeks.length - 1) : openNW,
+    className: "btnP",
+    style: {
+      fontSize: 11,
+      padding: "4px 10px"
+    }
+  }, isArch ? "→ Dernière" : "+ Nouvelle semaine")), isArch && /*#__PURE__*/React.createElement("span", {
+    style: {
+      background: "rgba(212,160,23,.1)",
+      border: `1px solid ${DQ.border}`,
+      color: DQ.muted,
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 10,
+      letterSpacing: 1,
+      padding: "3px 10px",
+      borderRadius: 3
+    }
+  }, "\uD83D\uDCE6 ARCHIVE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 10,
+      color: DQ.muted
+    }
+  }, filtered.length, " membre", filtered.length > 1 ? "s" : ""), role === "direction" && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setSalD({
+        P: {
+          ...JSON.parse(JSON.stringify(localPrices))
+        },
+        C: {
+          ...localCap
+        },
+        D: {
+          ...localDirSal
+        }
+      });
+      setShowSal(true);
+    },
+    className: "btnG",
+    style: {
+      fontSize: 11,
+      padding: "4px 10px",
+      color: DQ.accent,
+      borderColor: "rgba(212,160,23,.4)"
+    }
+  }, "\u2699 Salaires"), canEdit && /*#__PURE__*/React.createElement("button", {
+    onClick: clearWeek,
+    className: "btnG",
+    style: {
+      fontSize: 11,
+      padding: "4px 10px"
+    }
+  }, "\uD83D\uDDD1 Vider"), /*#__PURE__*/React.createElement("button", {
+    onClick: exportCSV,
+    className: "btnG",
+    style: {
+      fontSize: 11,
+      padding: "4px 10px",
+      color: DQ.green,
+      borderColor: "rgba(90,140,74,.4)"
+    }
+  }, "\u2193 CSV"), canEdit && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "relative"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: () => setQsOpen(p => !p)
+  }, "+ Ajouter"), qsOpen && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      top: "110%",
+      right: 0,
+      zIndex: 50,
+      background: DQ.panel,
+      border: `1px solid ${DQ.accent}`,
+      borderRadius: "0 0 4px 4px",
+      minWidth: 300,
+      maxHeight: 240,
+      overflowY: "auto",
+      boxShadow: "0 8px 24px rgba(0,0,0,.5)"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    autoFocus: true,
+    value: qs,
+    onChange: e => setQs(e.target.value),
+    style: {
+      width: "100%",
+      background: "rgba(212,160,23,.08)",
+      border: "none",
+      borderBottom: `1px solid ${DQ.border}`,
+      color: DQ.text,
+      fontFamily: "'Barlow Condensed',sans-serif",
+      fontSize: 14,
+      padding: "8px 12px",
+      outline: "none"
+    },
+    placeholder: "Rechercher..."
+  }), qsFil.map(r => {
+    const a = addedSet.has(r.casier);
+    return /*#__PURE__*/React.createElement("div", {
+      key: r.casier,
+      className: "ac-item",
+      onClick: () => !a && addFromRoster(r),
+      style: {
+        opacity: a ? .7 : 1,
+        cursor: a ? "default" : "pointer"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 10,
+        background: "rgba(212,160,23,.2)",
+        color: DQ.accent,
+        padding: "2px 6px",
+        borderRadius: 2
+      }
+    }, r.casier), /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1,
+        fontSize: 12,
+        color: DQ.white
+      }
+    }, r.nom), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        color: DQ.muted
+      }
+    }, r.grade), a && /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.green,
+        fontSize: 11
+      }
+    }, "\u2713"));
+  }), qs.length > 1 && qsFil.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "empty"
+  }, "Aucun r\xE9sultat")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 5,
+      flexWrap: "wrap",
+      marginBottom: 6,
+      alignItems: "center"
+    }
+  }, ["all", "Direction", "Charbon", "Fer", "Cuivre", "Or", "Aluminium"].map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    className: `fbtn c-${c}${fc === c ? " on" : ""}`,
+    onClick: () => setFc(c)
+  }, c === "all" ? "Tous" : c)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 1,
+      height: 14,
+      background: DQ.border,
+      margin: "0 2px"
+    }
+  }), ["all", "Expérimenté", "Confirmé", "Stagiaire"].map(g => /*#__PURE__*/React.createElement("button", {
+    key: g,
+    className: `fbtn${fg === g ? " on" : ""}`,
+    onClick: () => setFg(g)
+  }, g === "all" ? "Tous grades" : g)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      background: "rgba(212,160,23,.06)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      padding: "4px 10px",
+      flex: 1,
+      maxWidth: 260,
+      marginLeft: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 13
+    }
+  }, "\uD83D\uDD0D"), /*#__PURE__*/React.createElement("input", {
+    value: srch,
+    onChange: e => setSrch(e.target.value),
+    placeholder: "Rechercher nom, casier...",
+    style: {
+      background: "none",
+      border: "none",
+      color: DQ.text,
+      fontFamily: "'Barlow Condensed',sans-serif",
+      fontSize: 14,
+      outline: "none",
+      width: "100%"
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "twrap"
+  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, ["Catégorie", "Grade", "Prénom Nom", "Casier", "Payer", "Exports", "CA Carton", "Quantité", "Salaire", "Frais", "Prime", "Status", "Commentaire", ""].map(h => /*#__PURE__*/React.createElement("th", {
+    key: h
+  }, h)))), /*#__PURE__*/React.createElement("tbody", null, filtered.length === 0 ? /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: 14,
+    className: "empty"
+  }, "Aucun membre \u2014 cliquez sur + Ajouter ou allez dans Recrutement")) : filtered.map(m => {
+    const sal = calcSalLocal(m),
+      ca = (m.exports || 0) * CARTON_UNIT;
+    const sc = m.status ? STATUS_COLOR[m.status] : null;
+    const quota = QUOTAS[m.categorie] || 0,
+      qty = m.quantite || 0,
+      qOk = quota > 0 && qty >= quota;
+    const gOpts = m.categorie === "Direction" ? DGO : GFO;
+    const ro = isArch && role !== "direction";
+    const isDem = m.status === "Démission";
+    const sbCls = `sbadge sb-${scls(m.status || "")}`;
+    // Prime prend le dessus sur TOUT si valeur > 0 ou statut Prime
+    const hasPrime = (m.prime || 0) > 0 || m.status === "Prime";
+    const primeCol = {
+      border: "#7A5C8C",
+      bg: "rgba(122,92,140,.12)",
+      text: "#b899d4"
+    };
+    const nomSc = hasPrime ? primeCol : sc;
+    return /*#__PURE__*/React.createElement("tr", {
+      key: m.casier,
+      className: "dqR"
+    }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 5,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: .5,
+        textTransform: "uppercase"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 6,
+        height: 6,
+        borderRadius: "50%",
+        background: CAT_COL[m.categorie] || "#666",
+        flexShrink: 0
+      }
+    }), isDem ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.muted,
+        textDecoration: "line-through"
+      }
+    }, m.categorie) : m.categorie)), /*#__PURE__*/React.createElement("td", null, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.muted
+      }
+    }, isDem ? "—" : m.grade) : /*#__PURE__*/React.createElement("select", {
+      value: m.grade,
+      onChange: e => updRow(m.casier, "grade", e.target.value)
+    }, gOpts.map(g => /*#__PURE__*/React.createElement("option", {
+      key: g,
+      value: g
+    }, g)))), /*#__PURE__*/React.createElement("td", {
+      style: {
+        borderLeft: nomSc ? `3px solid ${nomSc.border}` : "3px solid transparent",
+        background: nomSc ? nomSc.bg : "transparent",
+        paddingLeft: 10,
+        borderRadius: 3
+      }
+    }, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: nomSc ? nomSc.text : DQ.text,
+        fontWeight: nomSc ? 600 : 400
+      }
+    }, m.nom) : /*#__PURE__*/React.createElement("input", {
+      value: m.nom || "",
+      onChange: e => updRow(m.casier, "nom", e.target.value),
+      style: {
+        minWidth: 110,
+        color: nomSc ? nomSc.text : DQ.text,
+        fontWeight: nomSc ? 600 : 400
+      }
+    })), /*#__PURE__*/React.createElement("td", {
+      style: {
+        textAlign: "center"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        background: "rgba(212,160,23,.15)",
+        color: DQ.accent,
+        padding: "1px 7px",
+        borderRadius: 2
+      }
+    }, m.casier || "—")), /*#__PURE__*/React.createElement("td", {
+      style: {
+        textAlign: "center"
+      }
+    }, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: m.menus ? DQ.green : DQ.muted
+      }
+    }, m.menus ? "✓" : "—") : /*#__PURE__*/React.createElement("input", {
+      type: "checkbox",
+      checked: !!m.menus,
+      onChange: e => updRow(m.casier, "menus", e.target.checked)
+    })), /*#__PURE__*/React.createElement("td", null, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11
+      }
+    }, m.exports || 0) : /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      value: m.exports || 0,
+      min: "0",
+      onChange: e => updRow(m.casier, "exports", +e.target.value),
+      style: {
+        width: 55
+      }
+    })), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: DQ.accent2
+      }
+    }, ca ? fmt(ca) + " $" : "—"), /*#__PURE__*/React.createElement("td", {
+      style: {
+        background: qOk ? "rgba(90,140,74,.08)" : "transparent"
+      }
+    }, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: qOk ? "#7dba65" : DQ.text,
+        fontWeight: qOk ? 700 : 400
+      }
+    }, fmt(qty), qOk ? " ✓" : "") : /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      value: qty,
+      min: "0",
+      onChange: e => updRow(m.casier, "quantite", +e.target.value),
+      style: {
+        width: 65,
+        color: qOk ? "#7dba65" : "",
+        fontWeight: qOk ? 700 : 400
+      }
+    })), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: DQ.green
+      }
+    }, sal ? fmt(sal) + " $" : "—"), /*#__PURE__*/React.createElement("td", null, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: "#c87941"
+      }
+    }, m.frais ? fmt(m.frais) + " $" : "—") : /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      value: m.frais || 0,
+      min: "0",
+      onChange: e => updRow(m.casier, "frais", +e.target.value),
+      style: {
+        width: 65,
+        color: "#c87941"
+      }
+    })), /*#__PURE__*/React.createElement("td", null, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: "#b899d4"
+      }
+    }, m.prime ? fmt(m.prime) + " $" : "—") : /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      value: m.prime || 0,
+      min: "0",
+      onChange: e => updRow(m.casier, "prime", +e.target.value),
+      style: {
+        width: 65,
+        color: "#b899d4"
+      }
+    })), /*#__PURE__*/React.createElement("td", null, ro ? /*#__PURE__*/React.createElement("span", {
+      className: sbCls
+    }, m.status || "—") : /*#__PURE__*/React.createElement("select", {
+      value: m.status || "",
+      onChange: e => updRow(m.casier, "status", e.target.value),
+      style: {
+        minWidth: 105
+      }
+    }, STATUS_OPTS.map(s => /*#__PURE__*/React.createElement("option", {
+      key: s,
+      value: s
+    }, s || "—")))), /*#__PURE__*/React.createElement("td", null, ro ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.muted,
+        fontSize: 12
+      }
+    }, m.commentaire || "—") : /*#__PURE__*/React.createElement("input", {
+      value: m.commentaire || "",
+      onChange: e => updRow(m.casier, "commentaire", e.target.value),
+      placeholder: "...",
+      style: {
+        minWidth: 80,
+        color: DQ.muted
+      }
+    })), /*#__PURE__*/React.createElement("td", null, !ro && /*#__PURE__*/React.createElement("button", {
+      className: "delbtn",
+      onClick: () => delRow(m.casier)
+    }, "\xD7")));
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "tbar"
+  }, [["Présents", totAct, ""], ["Exports", fmt(totExp), "cu"], ["CA Carton", fmt(totCA) + " $", "cu"], ["Quantité", fmt(totQty), ""], ["Salaires", fmt(totSal) + " $", "g"], ["Frais", fmt(totFrais) + " $", "y"], ["Primes", fmt(totPrime) + " $", "pu"]].map(([l, v, c]) => /*#__PURE__*/React.createElement("div", {
+    key: l,
+    className: "tc"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tl"
+  }, l), /*#__PURE__*/React.createElement("div", {
+    className: `tv${c ? " " + c : ""}`
+  }, v)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(4,1fr)",
+      gap: 12,
+      marginTop: 16
+    }
+  }, ["Charbon", "Fer", "Cuivre", "Or", "Aluminium"].map(cat => {
+    const ico = {
+      Charbon: "⛏",
+      Fer: "⚙",
+      Cuivre: "🔶",
+      Or: "✨",
+      Aluminium: "🔩"
+    }[cat];
+    const q = QUOTAS[cat] || 0,
+      col = CAT_COL[cat];
+    const top = [...cw.data].filter(m => m.categorie === cat && (m.quantite || 0) > 0).sort((a, b) => (b.quantite || 0) - (a.quantite || 0)).slice(0, 5);
+    return /*#__PURE__*/React.createElement("div", {
+      key: cat,
+      className: "panel"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "phdr",
+      style: {
+        borderLeft: `3px solid ${col}`
+      }
+    }, ico, " Top 5 ", cat), /*#__PURE__*/React.createElement("div", {
+      className: "pbody"
+    }, !top.length ? /*#__PURE__*/React.createElement("div", {
+      className: "empty"
+    }, "Pas de donn\xE9es") : top.map((m, i) => {
+      const qty = m.quantite || 0,
+        pct = q ? Math.min(100, Math.round(qty / q * 100)) : 0,
+        atQ = q && qty >= q;
+      return /*#__PURE__*/React.createElement("div", {
+        key: i,
+        className: "pitem"
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 6
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 13,
+          fontWeight: 500,
+          color: i === 0 ? "#ffd700" : i === 1 ? "#c0c0c0" : i === 2 ? "#cd7f32" : DQ.muted,
+          width: 24,
+          textAlign: "center",
+          flexShrink: 0
+        }
+      }, ["🥇", "🥈", "🥉", "4", "5"][i]), /*#__PURE__*/React.createElement("span", {
+        style: {
+          flex: 1,
+          fontSize: 12,
+          color: atQ ? "#7dba65" : DQ.white,
+          fontWeight: atQ ? 700 : 400
+        }
+      }, m.nom || "—"), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11,
+          color: atQ ? "#7dba65" : DQ.accent
+        }
+      }, fmt(qty), atQ ? " ✓" : "")), q > 0 && /*#__PURE__*/React.createElement("div", {
+        style: {
+          height: 3,
+          background: "rgba(212,160,23,.1)",
+          borderRadius: 2,
+          marginLeft: 28
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          height: "100%",
+          width: pct + "%",
+          background: atQ ? "#7dba65" : col,
+          borderRadius: 2,
+          transition: "width .4s"
+        }
+      })));
+    })));
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "phdr"
+  }, "\uD83D\uDCCB Status"), /*#__PURE__*/React.createElement("div", {
+    className: "pbody"
+  }, ["Nouveau", "Absent", "Avertissement", "Licencié", "Démission", "Up", "Prime"].map(s => {
+    const g = cw.data.filter(m => m.status === s);
+    if (!g.length) return null;
+    const cols = {
+      Nouveau: DQ.green,
+      Absent: DQ.blue,
+      Avertissement: DQ.accent,
+      Licencié: DQ.red,
+      Démission: "#d4956a",
+      Up: DQ.accent2,
+      Prime: "#b899d4"
+    };
+    return /*#__PURE__*/React.createElement("div", {
+      key: s,
+      className: "sritem"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+      className: `sbadge sb-${scls(s)}`
+    }, s), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: DQ.muted,
+        marginTop: 2,
+        maxWidth: 140,
+        lineHeight: 1.3
+      }
+    }, g.map(m => m.nom || "?").join(", "))), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 16,
+        color: cols[s],
+        fontWeight: 500
+      }
+    }, g.length));
+  }), !cw.data.some(m => m.status) && /*#__PURE__*/React.createElement("div", {
+    className: "empty"
+  }, "Aucun status"))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "phdr"
+  }, "\uD83D\uDCB0 Frais"), /*#__PURE__*/React.createElement("div", {
+    className: "pbody"
+  }, cw.data.filter(m => m.frais > 0).sort((a, b) => (b.frais || 0) - (a.frais || 0)).map(m => /*#__PURE__*/React.createElement("div", {
+    key: m.casier,
+    className: "fitem"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.white
+    }
+  }, m.nom || "—"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: "#D4A017",
+      fontSize: 11
+    }
+  }, fmt(m.frais || 0), " $"))), !cw.data.some(m => m.frais > 0) && /*#__PURE__*/React.createElement("div", {
+    className: "empty"
+  }, "Aucune note"))), /*#__PURE__*/React.createElement("div", {
+    className: "panel"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "phdr"
+  }, "\uD83C\uDF96 Primes"), /*#__PURE__*/React.createElement("div", {
+    className: "pbody"
+  }, cw.data.filter(m => m.prime > 0 || m.status === "Prime").sort((a, b) => (b.prime || 0) - (a.prime || 0)).map(m => /*#__PURE__*/React.createElement("div", {
+    key: m.casier,
+    className: "pritem"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.white
+    }
+  }, m.nom || "—"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: "#ce93d8",
+      fontSize: 11
+    }
+  }, m.prime ? fmt(m.prime) + " $" : "⭐"))), !cw.data.some(m => m.prime > 0 || m.status === "Prime") && /*#__PURE__*/React.createElement("div", {
+    className: "empty"
+  }, "Aucune prime")))), showNW && /*#__PURE__*/React.createElement("div", {
+    className: "ov"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mhdr"
+  }, /*#__PURE__*/React.createElement("span", null, "Nouvelle semaine"), /*#__PURE__*/React.createElement("button", {
+    className: "cbtn",
+    onClick: () => setShowNW(false)
+  }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+    className: "mbody"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(30,144,255,.08)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 5,
+      padding: "14px 16px",
+      marginBottom: 16,
+      fontSize: 13,
+      lineHeight: 1.7
+    }
+  }, /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: DQ.accent
+    }
+  }, "R\xE9cap sem. ", cw.num, " avant cl\xF4ture :"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("br", null), "\u2022 ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent,
+      fontWeight: 600
+    }
+  }, cw.data.length, " membres"), " dans la semaine", /*#__PURE__*/React.createElement("br", null), cw.data.filter(m => m.status === "Up").length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, "\u2022 ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.green,
+      fontWeight: 600
+    }
+  }, "\u2B06 ", cw.data.filter(m => m.status === "Up").length, " Up"), " \u2014 promotions appliqu\xE9es", /*#__PURE__*/React.createElement("br", null)), cw.data.filter(m => m.status === "Licencié").length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, "\u2022 ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.red,
+      fontWeight: 600
+    }
+  }, "\uD83D\uDD34 ", cw.data.filter(m => m.status === "Licencié").length, " Licenci\xE9(s)"), " \u2014 retir\xE9s du roster", /*#__PURE__*/React.createElement("br", null)), /*#__PURE__*/React.createElement("br", null), "La nouvelle semaine reprend le roster ", /*#__PURE__*/React.createElement("b", null, "sans les donn\xE9es de production"), "."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 6
+    }
+  }, "Num\xE9ro de la nouvelle semaine"), /*#__PURE__*/React.createElement("input", {
+    value: newNum,
+    onChange: e => setNewNum(e.target.value),
+    style: {
+      background: DQ.mid,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      color: DQ.white,
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 16,
+      padding: "8px 12px",
+      outline: "none",
+      width: 120,
+      textAlign: "center"
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "mftr"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btnG",
+    onClick: () => setShowNW(false)
+  }, "Annuler"), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: confirmNW
+  }, "\u2713 Cr\xE9er la semaine")))), showSal && salD && /*#__PURE__*/React.createElement("div", {
+    className: "ov"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    style: {
+      width: 560,
+      maxWidth: "95vw"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mhdr"
+  }, /*#__PURE__*/React.createElement("span", null, "\u2699 Param\xE8tres Salaires"), /*#__PURE__*/React.createElement("button", {
+    className: "cbtn",
+    onClick: () => setShowSal(false)
+  }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+    className: "mbody",
+    style: {
+      maxHeight: "65vh",
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 14
+    }
+  }, "Taux par cat\xE9gorie et grade"), ["Charbon", "Fer", "Cuivre", "Or", "Aluminium"].map(cat => /*#__PURE__*/React.createElement("div", {
+    key: cat,
+    style: {
+      marginBottom: 12,
+      background: "rgba(212,160,23,.04)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: "10px 12px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      letterSpacing: 1,
+      textTransform: "uppercase",
+      color: CAT_COL[cat],
+      marginBottom: 8
+    }
+  }, cat), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      gap: 8
+    }
+  }, ["Expérimenté", "Confirmé", "Stagiaire"].map(g => /*#__PURE__*/React.createElement("div", {
+    key: g
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, g), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "0.001",
+    min: "0",
+    value: (salD.P[cat] || {})[g] || 0,
+    onChange: e => setSalD(d => ({
+      ...d,
+      P: {
+        ...d.P,
+        [cat]: {
+          ...d.P[cat],
+          [g]: +e.target.value
+        }
+      }
+    })),
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 13
+    }
+  })))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      paddingTop: 12,
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 10
+    }
+  }, "Plafonds (CAP)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      gap: 10
+    }
+  }, ["Expérimenté", "Confirmé", "Stagiaire"].map(g => /*#__PURE__*/React.createElement("div", {
+    key: g
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, g), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "100",
+    min: "0",
+    value: salD.C[g] || 0,
+    onChange: e => setSalD(d => ({
+      ...d,
+      C: {
+        ...d.C,
+        [g]: +e.target.value
+      }
+    })),
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 13
+    }
+  }))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      paddingTop: 12,
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 10
+    }
+  }, "Salaires Direction"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10
+    }
+  }, ["Patronne", "Co Patron", "Lead Manager", "Manager", "RH"].map(r => /*#__PURE__*/React.createElement("div", {
+    key: r
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, r), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    step: "100",
+    min: "0",
+    value: salD.D[r] || 0,
+    onChange: e => setSalD(d => ({
+      ...d,
+      D: {
+        ...d.D,
+        [r]: +e.target.value
+      }
+    })),
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 13
+    }
+  })))))), /*#__PURE__*/React.createElement("div", {
+    className: "mftr"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btnG",
+    onClick: () => setShowSal(false)
+  }, "Annuler"), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: () => {
+      setLocalPrices(salD.P);
+      setLocalCap(salD.C);
+      setLocalDirSal(salD.D);
+      setShowSal(false);
+    }
+  }, "\u2713 Enregistrer")))));
+}
+
+// ── Archives ──────────────────────────────────────
+function PageArchives({
+  weeks
+}) {
+  const [open, setOpen] = useState({});
+  const archived = weeks.slice(0, -1).reverse();
+  if (!archived.length) return /*#__PURE__*/React.createElement("div", {
+    className: "empty",
+    style: {
+      padding: 60,
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, "Aucune archive disponible \u2014 cr\xE9ez une nouvelle semaine pour archiver la courante");
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Archives"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 16
+    }
+  }, archived.length, " semaine", archived.length > 1 ? "s" : "", " archiv\xE9e", archived.length > 1 ? "s" : ""), archived.map((w, i) => {
+    const totSal = w.data.reduce((s, m) => s + calcSal(m), 0);
+    const totCA = w.data.reduce((s, m) => s + (m.exports || 0) * CARTON_UNIT, 0);
+    const isOpen = open[i];
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "archcard"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "12px 16px",
+        cursor: "pointer",
+        background: DQ.mid
+      },
+      onClick: () => setOpen(p => ({
+        ...p,
+        [i]: !p[i]
+      }))
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: "'Rajdhani',sans-serif",
+        fontSize: 20,
+        fontWeight: 700,
+        letterSpacing: 2,
+        color: DQ.white
+      }
+    }, "SEM. ", w.num), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 10,
+        color: DQ.muted
+      }
+    }, w.date)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 20,
+        marginLeft: "auto",
+        alignItems: "center"
+      }
+    }, [["Membres", w.data.length, DQ.white], ["Salaires", fmt(totSal) + " $", DQ.green], ["CA Carton", fmt(totCA) + " $", DQ.accent2], ["Présents", w.data.filter(m => m.status !== "Absent" && m.status !== "Licencié").length, DQ.text]].map(([l, v, c]) => /*#__PURE__*/React.createElement("div", {
+      key: l,
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: DQ.muted,
+        textAlign: "center"
+      }
+    }, /*#__PURE__*/React.createElement("strong", {
+      style: {
+        display: "block",
+        fontSize: 14,
+        color: c
+      }
+    }, v), l))), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.muted,
+        fontSize: 18,
+        marginLeft: 8,
+        display: "inline-block",
+        transition: "transform .2s",
+        transform: isOpen ? "rotate(180deg)" : "none"
+      }
+    }, "\u25BE")), isOpen && /*#__PURE__*/React.createElement("div", {
+      style: {
+        overflow: "auto",
+        maxHeight: 400
+      }
+    }, /*#__PURE__*/React.createElement("table", {
+      style: {
+        minWidth: 700
+      }
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, ["Catégorie", "Grade", "Nom", "Casier", "Exports", "CA", "Quantité", "Salaire", "Frais", "Prime", "Status", "Commentaire"].map(h => /*#__PURE__*/React.createElement("th", {
+      key: h
+    }, h)))), /*#__PURE__*/React.createElement("tbody", null, w.data.map((m, j) => {
+      const sal = calcSal(m),
+        ca = (m.exports || 0) * CARTON_UNIT;
+      const sc = m.status ? STATUS_COLOR[m.status] : null;
+      const hasPrime = (m.prime || 0) > 0 || m.status === "Prime";
+      const primeCol = {
+        border: "#7A5C8C",
+        bg: "rgba(122,92,140,.12)",
+        text: "#b899d4"
+      };
+      const nomSc = hasPrime ? primeCol : sc;
+      return /*#__PURE__*/React.createElement("tr", {
+        key: j,
+        className: "dqR"
+      }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 5,
+          fontSize: 11,
+          fontWeight: 600,
+          textTransform: "uppercase"
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          background: CAT_COL[m.categorie] || "#666",
+          flexShrink: 0
+        }
+      }), m.categorie)), /*#__PURE__*/React.createElement("td", {
+        style: {
+          color: DQ.muted,
+          fontSize: 12
+        }
+      }, m.grade), /*#__PURE__*/React.createElement("td", {
+        style: {
+          borderLeft: nomSc ? `3px solid ${nomSc.border}` : "3px solid transparent",
+          background: nomSc ? nomSc.bg : "transparent",
+          paddingLeft: 8
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: nomSc ? nomSc.text : DQ.text,
+          fontWeight: nomSc ? 600 : 400
+        }
+      }, m.nom)), /*#__PURE__*/React.createElement("td", {
+        style: {
+          textAlign: "center"
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11,
+          background: "rgba(212,160,23,.15)",
+          color: DQ.accent,
+          padding: "1px 7px",
+          borderRadius: 2
+        }
+      }, m.casier || "—")), /*#__PURE__*/React.createElement("td", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11
+        }
+      }, m.exports || 0), /*#__PURE__*/React.createElement("td", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11,
+          color: DQ.accent2
+        }
+      }, ca ? fmt(ca) + " $" : "—"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11
+        }
+      }, fmt(m.quantite || 0)), /*#__PURE__*/React.createElement("td", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11,
+          color: DQ.green
+        }
+      }, sal ? fmt(sal) + " $" : "—"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11,
+          color: "#c87941"
+        }
+      }, m.frais ? fmt(m.frais) + " $" : "—"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 11,
+          color: "#b899d4"
+        }
+      }, m.prime ? fmt(m.prime) + " $" : "—"), /*#__PURE__*/React.createElement("td", null, m.status ? /*#__PURE__*/React.createElement("span", {
+        className: sbCls(m.status)
+      }, m.status) : "—"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          color: DQ.muted,
+          fontSize: 12
+        }
+      }, m.commentaire || "—"));
+    })))));
+  }));
+}
+
+// ── Avertissements ────────────────────────────────
+function PageAvertissements({
+  weeks
+}) {
+  const [srch, setSrch] = useState("");
+  const [open, setOpen] = useState({});
+  const map = {};
+  weeks.forEach(w => {
+    w.data.forEach(m => {
+      if (m.status === "Avertissement" || m.status === "Licencié" || m.status === "Démission") {
+        const key = m.casier || m.nom;
+        if (!map[key]) map[key] = {
+          nom: m.nom,
+          casier: m.casier,
+          cat: m._oldCat || m.categorie,
+          grade: m._oldGrade || m.grade,
+          entries: []
+        };
+        map[key].entries.push({
+          week: w.num,
+          status: m.status,
+          commentaire: m.commentaire || ""
+        });
+      }
+    });
+  });
+  let members = Object.values(map).filter(m => !srch || (m.nom || "").toLowerCase().includes(srch.toLowerCase()) || (m.casier || "").toLowerCase().includes(srch.toLowerCase())).sort((a, b) => b.entries.length - a.entries.length);
+  const totalA = members.reduce((s, m) => s + m.entries.filter(e => e.status === "Avertissement").length, 0);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 4
+    }
+  }, "Avertissements"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 16
+    }
+  }, members.length, " membre", members.length !== 1 ? "s" : "", " concern\xE9", members.length !== 1 ? "s" : "", " \xB7 ", totalA, " avertissement", totalA !== 1 ? "s" : ""), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: srch,
+    onChange: e => setSrch(e.target.value),
+    placeholder: "\uD83D\uDD0D Rechercher...",
+    style: {
+      maxWidth: 300
+    }
+  })), !members.length && /*#__PURE__*/React.createElement("div", {
+    className: "empty",
+    style: {
+      padding: 60
+    }
+  }, "\u26A0\uFE0F Aucun avertissement enregistr\xE9"), members.map((m, mi) => {
+    const aC = m.entries.filter(e => e.status === "Avertissement").length;
+    const danger = aC >= 3;
+    const col = CAT_COL[m.cat] || DQ.accent;
+    const isO = open[mi];
+    return /*#__PURE__*/React.createElement("div", {
+      key: mi,
+      className: "avcrd"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "10px 14px",
+        background: DQ.mid,
+        cursor: "pointer"
+      },
+      onClick: () => setOpen(p => ({
+        ...p,
+        [mi]: !p[mi]
+      }))
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 32,
+        height: 32,
+        borderRadius: 4,
+        background: col,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 12,
+        fontWeight: 500,
+        color: "#fff",
+        flexShrink: 0
+      }
+    }, m.casier || "?"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14,
+        fontWeight: 600,
+        color: DQ.text
+      }
+    }, m.nom), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        letterSpacing: 1,
+        textTransform: "uppercase",
+        fontWeight: 600,
+        color: col
+      }
+    }, m.cat, " \xB7 ", m.grade)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        padding: "2px 8px",
+        borderRadius: 2,
+        background: danger ? "rgba(184,64,64,.2)" : "rgba(212,160,23,.15)",
+        color: danger ? "#d47070" : DQ.accent,
+        border: `1px solid ${danger ? "rgba(184,64,64,.35)" : "rgba(212,160,23,.3)"}`
+      }
+    }, "\u26A0 ", aC, " avert."), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 10,
+        color: DQ.muted,
+        margin: "0 8px"
+      }
+    }, m.entries.length, " \xE9v\xE8n."), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.muted,
+        fontSize: 16,
+        display: "inline-block",
+        transition: "transform .2s",
+        transform: isO ? "rotate(180deg)" : "none"
+      }
+    }, "\u25BE")), isO && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "10px 14px"
+      }
+    }, m.entries.map((e, ei) => /*#__PURE__*/React.createElement("div", {
+      key: ei,
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "5px 0",
+        borderBottom: `1px solid ${DQ.border}`,
+        fontSize: 12
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 10,
+        color: DQ.muted,
+        width: 70,
+        flexShrink: 0
+      }
+    }, "Sem. ", e.week), /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: sbCls(e.status)
+    }, e.status)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: DQ.muted,
+        fontSize: 11,
+        fontStyle: "italic"
+      }
+    }, e.commentaire || "—")))));
+  }));
+}
+
+// ── Déclarations produits ─────────────────────────
+function PageDeclarations({
+  decls,
+  setDecls,
+  comptes
+}) {
+  const [srch, setSrch] = useState("");
+  const [fm, setFm] = useState("all");
+  const [eid, setEid] = useState(null);
+  const [eq, setEq] = useState("");
+  const [ec, setEc] = useState("");
+  const filtered = useMemo(() => decls.filter(d => {
+    const emp = comptes.find(c => c.id === d.employeId);
+    const ms = !srch || emp && `${emp.prenom} ${emp.nom}`.toLowerCase().includes(srch.toLowerCase()) || d.minerai.toLowerCase().includes(srch.toLowerCase());
+    return ms && (fm === "all" || d.minerai === fm);
+  }).sort((a, b) => new Date(b.date) - new Date(a.date)), [decls, srch, fm, comptes]);
+  function save(id) {
+    setDecls(p => p.map(d => d.id === id ? {
+      ...d,
+      qte: Number(eq) || 0,
+      cartons: Number(ec) || 0
+    } : d));
+    setEid(null);
+  }
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 2
+    }
+  }, "D\xE9clarations de produits"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 16
+    }
+  }, "Visualisation et correction des quantit\xE9s d\xE9clar\xE9es"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 14,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "2fr 1fr",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Recherche"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: srch,
+    onChange: e => setSrch(e.target.value),
+    placeholder: "Employ\xE9, minerai..."
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Minerai"), /*#__PURE__*/React.createElement("select", {
+    className: "sel",
+    style: {
+      width: "100%"
+    },
+    value: fm,
+    onChange: e => setFm(e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "all"
+  }, "Tous"), MINERAIS.map(m => /*#__PURE__*/React.createElement("option", {
+    key: m,
+    value: m
+  }, m))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      marginTop: 8,
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, "Affich\xE9 : ", filtered.length, " / ", decls.length)), /*#__PURE__*/React.createElement("div", {
+    className: "twrap"
+  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, ["Date", "Employé", "Minerai", "Grade", "Quantité", "Cartons vendus", "Salaire est.", "Action"].map(h => /*#__PURE__*/React.createElement("th", {
+    key: h
+  }, h)))), /*#__PURE__*/React.createElement("tbody", null, filtered.map(d => {
+    const emp = comptes.find(c => c.id === d.employeId);
+    const sal = calcSalD(d.qte, d.cartons, d.minerai, d.grade);
+    const ok = QUOTAS[d.minerai] > 0 && d.qte >= QUOTAS[d.minerai];
+    return /*#__PURE__*/React.createElement("tr", {
+      key: d.id,
+      className: "dqR"
+    }, /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11
+      }
+    }, fmtDate(d.date)), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 600
+      }
+    }, emp?.prenom, " ", emp?.nom), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: DQ.muted
+      }
+    }, "#", emp?.id)), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 5
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 7,
+        height: 7,
+        borderRadius: "50%",
+        background: CAT_COL[d.minerai]
+      }
+    }), d.minerai)), /*#__PURE__*/React.createElement("td", {
+      style: {
+        color: DQ.muted,
+        fontSize: 12
+      }
+    }, d.grade), /*#__PURE__*/React.createElement("td", null, eid === d.id ? /*#__PURE__*/React.createElement("input", {
+      className: "inp",
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        width: 90
+      },
+      type: "number",
+      value: eq,
+      onChange: e => setEq(e.target.value)
+    }) : /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: ok ? "#7dba65" : DQ.text,
+        fontWeight: ok ? 700 : 400
+      }
+    }, fmt(d.qte), ok ? " ✓" : "")), /*#__PURE__*/React.createElement("td", null, eid === d.id ? /*#__PURE__*/React.createElement("input", {
+      className: "inp",
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        width: 70
+      },
+      type: "number",
+      value: ec,
+      onChange: e => setEc(e.target.value)
+    }) : /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: DQ.accent2
+      }
+    }, d.cartons > 0 ? d.cartons : "—")), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: DQ.green
+      }
+    }, fmt(sal), " $"), /*#__PURE__*/React.createElement("td", null, eid === d.id ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+      className: "btnP",
+      style: {
+        padding: "4px 10px",
+        marginRight: 4,
+        fontSize: 11
+      },
+      onClick: () => save(d.id)
+    }, "\u2713"), /*#__PURE__*/React.createElement("button", {
+      className: "btnG",
+      style: {
+        padding: "4px 10px",
+        fontSize: 11
+      },
+      onClick: () => setEid(null)
+    }, "\u2717")) : /*#__PURE__*/React.createElement("button", {
+      className: "btnG",
+      style: {
+        fontSize: 11,
+        padding: "4px 10px"
+      },
+      onClick: () => {
+        setEid(d.id);
+        setEq(d.qte);
+        setEc(d.cartons || 0);
+      }
+    }, "\u270F Modifier")));
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "tbar"
+  }, MINERAIS.map(m => {
+    const s = filtered.filter(d => d.minerai === m).reduce((t, d) => t + d.qte, 0);
+    if (!s) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      key: m,
+      className: "tc"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "tl"
+    }, m), /*#__PURE__*/React.createElement("div", {
+      className: "tv",
+      style: {
+        color: CAT_COL[m]
+      }
+    }, fmt(s)));
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tc",
+    style: {
+      borderColor: "rgba(212,160,23,.5)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tl"
+  }, "Salaires est."), /*#__PURE__*/React.createElement("div", {
+    className: "tv g"
+  }, fmt(filtered.reduce((s, d) => s + calcSalD(d.qte, d.cartons, d.minerai, d.grade), 0)), " $"))));
+}
+
+// ── Récapitulatif ─────────────────────────────────
+function PageRecap({
+  decls,
+  comptes
+}) {
+  const [sem, setSem] = useState("2026-W22");
+  const [srch, setSrch] = useState("");
+  const [y, wn] = sem.split("-W").map(Number);
+  function wr(yy, ww) {
+    const s = new Date(yy, 0, 1 + (ww - 1) * 7);
+    const dow = s.getDay();
+    const st = new Date(s);
+    if (dow <= 4) st.setDate(s.getDate() - s.getDay() + 1);else st.setDate(s.getDate() + 8 - s.getDay());
+    const en = new Date(st);
+    en.setDate(en.getDate() + 6);
+    return [st, en];
+  }
+  const [st, en] = wr(y, wn);
+  const fil = decls.filter(d => {
+    const dt = new Date(d.date);
+    return dt >= st && dt <= new Date(en.getTime() + 86399999);
+  });
+  const byE = {};
+  fil.forEach(d => {
+    if (!byE[d.employeId]) byE[d.employeId] = {};
+    if (!byE[d.employeId][d.minerai]) byE[d.employeId][d.minerai] = {
+      qte: 0,
+      cartons: 0,
+      grade: d.grade
+    };
+    byE[d.employeId][d.minerai].qte += d.qte;
+    byE[d.employeId][d.minerai].cartons += d.cartons || 0;
+  });
+  const emps = Object.keys(byE).map(eid => {
+    const emp = comptes.find(c => c.id === Number(eid));
+    const mins = Object.entries(byE[eid]).map(([min, v]) => ({
+      minerai: min,
+      ...v
+    }));
+    const ts = mins.reduce((s, m) => s + calcSalD(m.qte, m.cartons, m.minerai, m.grade), 0);
+    return {
+      emp,
+      mins,
+      ts
+    };
+  }).filter(e => !srch || `${e.emp?.prenom} ${e.emp?.nom}`.toLowerCase().includes(srch.toLowerCase()));
+  const fmtW = `${st.toISOString().slice(0, 10)} → ${en.toISOString().slice(0, 10)}`;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 2
+    }
+  }, "R\xE9capitulatif hebdomadaire"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 16
+    }
+  }, "P\xE9riode : ", fmtW), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 14,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Semaine ISO"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    },
+    type: "week",
+    value: sem,
+    onChange: e => setSem(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Recherche"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: srch,
+    onChange: e => setSrch(e.target.value),
+    placeholder: "Nom employ\xE9..."
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "R\xE9sum\xE9"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(212,160,23,.07)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      padding: "7px 10px",
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 12,
+      color: DQ.muted
+    }
+  }, emps.length, " emp \xB7 ", fmt(emps.reduce((s, e) => s + e.ts, 0)), " $")))), emps.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "empty",
+    style: {
+      padding: 60
+    }
+  }, "Aucune d\xE9claration pour cette semaine"), emps.map(({
+    emp,
+    mins,
+    ts
+  }) => /*#__PURE__*/React.createElement("div", {
+    key: emp?.id,
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 12,
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 36,
+      height: 36,
+      borderRadius: 3,
+      background: `${CAT_COL[mins[0]?.minerai] || DQ.accent}22`,
+      border: `1px solid ${CAT_COL[mins[0]?.minerai] || DQ.accent}44`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 13,
+      color: CAT_COL[mins[0]?.minerai] || DQ.accent
+    }
+  }, emp?.id), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 16,
+      fontWeight: 700,
+      letterSpacing: 1
+    }
+  }, emp?.prenom, " ", emp?.nom), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 12,
+      marginLeft: 8,
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, "#", emp?.id), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: DQ.muted,
+      marginTop: 2
+    }
+  }, "Salaires : ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.green,
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, fmt(ts), " $")))), /*#__PURE__*/React.createElement("div", {
+    className: "twrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      minWidth: 500
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Minerai"), /*#__PURE__*/React.createElement("th", null, "Grade"), /*#__PURE__*/React.createElement("th", null, "Cartons vendus"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Quantit\xE9"), /*#__PURE__*/React.createElement("th", {
+    style: {
+      textAlign: "right"
+    }
+  }, "Salaire"))), /*#__PURE__*/React.createElement("tbody", null, mins.map(m => {
+    const ok = QUOTAS[m.minerai] > 0 && m.qte >= QUOTAS[m.minerai];
+    const sal = calcSalD(m.qte, m.cartons, m.minerai, m.grade);
+    return /*#__PURE__*/React.createElement("tr", {
+      key: m.minerai,
+      className: "dqR"
+    }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 7,
+        height: 7,
+        borderRadius: "50%",
+        background: CAT_COL[m.minerai]
+      }
+    }), m.minerai)), /*#__PURE__*/React.createElement("td", {
+      style: {
+        color: DQ.muted
+      }
+    }, m.grade), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: DQ.accent2
+      }
+    }, m.cartons > 0 ? m.cartons : "—"), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        textAlign: "right",
+        color: ok ? "#7dba65" : DQ.text,
+        fontWeight: ok ? 700 : 400
+      }
+    }, fmt(m.qte), ok ? " ✓" : ""), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        textAlign: "right",
+        color: DQ.green
+      }
+    }, fmt(sal), " $"));
+  })))))));
+}
+
+// ── Impôts ────────────────────────────────────────
+function PageImpots({
+  semaine,
+  decls
+}) {
+  const [per, setPer] = useState("W" + (semaine?.num || "23"));
+  const [c, setC] = useState({
+    chiffreAffaires: 0,
+    autresEntrees: 0,
+    donsRecus: 0,
+    decoration: 0,
+    subventions: 0,
+    masseSalariale: 59000,
+    matieresPremières: 4733,
+    fraisAvocats: 0,
+    fraisComptables: 0,
+    locations: 0,
+    fraisVehicules: 0,
+    nourriture: 0,
+    donsEffectues: 0,
+    locsNonDed: 0,
+    vehiculesNonDed: 0,
+    autresNonDed: 0,
+    impots: 0
+  });
+  const [show, setShow] = useState(true);
+  const upd = k => e => setC(p => ({
+    ...p,
+    [k]: Number(e.target.value) || 0
+  }));
+  const weekCA = (semaine?.data || []).reduce((s, m) => s + (m.exports || 0) * CARTON_RECAP, 0);
+  const vB = c.chiffreAffaires + c.autresEntrees + c.donsRecus + c.decoration + c.subventions + weekCA;
+  const cD = c.masseSalariale + c.matieresPremières + c.fraisAvocats + c.fraisComptables + c.locations + c.fraisVehicules + c.nourriture + c.donsEffectues;
+  const mI = vB - cD;
+  const impB = mI > 0 ? mI * 0.25 : 0;
+  const Row = ({
+    label,
+    k,
+    col
+  }) => /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "8px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      color: col || DQ.text
+    }
+  }, label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 5
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      width: 100,
+      textAlign: "right",
+      fontSize: 12
+    },
+    type: "number",
+    value: c[k],
+    onChange: upd(k)
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 11
+    }
+  }, "$")));
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+      marginBottom: 20,
+      flexWrap: "wrap",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: "#d47070",
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 4
+    }
+  }, "\uD83D\uDD12 Direction \u2014 Confidentiel"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2
+    }
+  }, "D\xE9claration P\xE9riodique"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 1,
+      textTransform: "uppercase"
+    }
+  }, "Expertise Comptable & Fiscalit\xE9")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      background: "rgba(212,160,23,.07)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      padding: "6px 12px"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    style: {
+      background: "none",
+      border: "none",
+      color: DQ.muted,
+      cursor: "pointer",
+      fontSize: 18,
+      lineHeight: 1
+    },
+    onClick: () => setPer(p => `W${Math.max(1, Number(p.slice(1)) - 1)}`)
+  }, "\u2039"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontWeight: 500,
+      fontSize: 15,
+      minWidth: 80
+    }
+  }, per, " ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 12
+    }
+  }, "2026")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 1,
+      textTransform: "uppercase"
+    }
+  }, "P\xE9riode")), /*#__PURE__*/React.createElement("button", {
+    style: {
+      background: "none",
+      border: "none",
+      color: DQ.muted,
+      cursor: "pointer",
+      fontSize: 18,
+      lineHeight: 1
+    },
+    onClick: () => setPer(p => `W${Number(p.slice(1)) + 1}`)
+  }, "\u203A")), /*#__PURE__*/React.createElement("button", {
+    className: "btnG",
+    onClick: () => setShow(p => !p)
+  }, show ? "Masquer" : "Afficher", " analyses"))), show && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3,1fr)",
+      gap: 12,
+      marginBottom: 16
+    }
+  }, [[DQ.green, "↗", "Volume d'affaires brut", fmt(vB) + " $US"], [DQ.blue, "↘", "Charges déductibles", fmt(cD) + " $US"], [DQ.red, "◎", "Marge imposable", fmt(mI) + " $US", mI < 0 ? "#d47070" : "#7dba65"]].map(([ic, ico, lbl, val, vc]) => /*#__PURE__*/React.createElement("div", {
+    key: lbl,
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: "14px 18px",
+      display: "flex",
+      alignItems: "center",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      background: ic + "22",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: 18,
+      flexShrink: 0
+    }
+  }, ico), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      letterSpacing: 2
+    }
+  }, lbl), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 18,
+      fontWeight: 500,
+      color: vc || ic
+    }
+  }, val))))), weekCA > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: "1px solid rgba(212,160,23,.4)",
+      borderRadius: 4,
+      padding: "12px 16px",
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.accent2,
+      textTransform: "uppercase",
+      marginBottom: 6
+    }
+  }, "\uD83D\uDCE6 CA Cartons Sem.", semaine?.num, " \u2014 import\xE9 automatiquement"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 20,
+      color: DQ.accent2,
+      fontWeight: 500
+    }
+  }, fmt(weekCA), " $"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      marginTop: 4
+    }
+  }, (semaine?.data || []).reduce((s, m) => s + (m.exports || 0), 0), " cartons \xD7 ", CARTON_RECAP, " $/carton")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3,1fr)",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: "#7dba65",
+      textTransform: "uppercase",
+      marginBottom: 12,
+      opacity: .8
+    }
+  }, "\uD83D\uDFE2 Flux des revenus"), [["Chiffre d'affaires", "chiffreAffaires"], ["Autres entrées", "autresEntrees"], ["Dons reçus", "donsRecus"], ["Décoration", "decoration"], ["Subventions", "subventions"]].map(([l, k]) => /*#__PURE__*/React.createElement(Row, {
+    key: k,
+    label: l,
+    k: k
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: "#7eb8c9",
+      textTransform: "uppercase",
+      marginBottom: 12,
+      opacity: .8
+    }
+  }, "\uD83D\uDD35 Charges d\xE9ductibles"), [["Masse Salariale", "masseSalariale"], ["Matières premières", "matieresPremières"], ["Frais d'Avocats", "fraisAvocats"], ["Frais Comptables", "fraisComptables"], ["Locations", "locations"], ["Frais véhicules", "fraisVehicules"], ["Nourriture", "nourriture"], ["Dons effectués", "donsEffectues"]].map(([l, k]) => /*#__PURE__*/React.createElement(Row, {
+    key: k,
+    label: l,
+    k: k
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: "#d47070",
+      textTransform: "uppercase",
+      marginBottom: 12,
+      opacity: .8
+    }
+  }, "\uD83D\uDD34 Frais non d\xE9ductibles"), [["Locations n.d.", "locsNonDed"], ["Véhicules n.d.", "vehiculesNonDed"], ["Autres n.d.", "autresNonDed"], ["IMPÔTS", "impots"]].map(([l, k]) => /*#__PURE__*/React.createElement(Row, {
+    key: k,
+    label: l,
+    k: k,
+    col: "#d47070"
+  })))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 18
+    }
+  }, "\uD83C\uDF81"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontWeight: 500,
+      fontSize: 12,
+      letterSpacing: 1
+    }
+  }, "TAXE SUR LIB\xC9RALIT\xC9S")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Total dons re\xE7us"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, fmt(c.donsRecus), " $")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Taux appliqu\xE9"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, "0%")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px 0"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 700
+    }
+  }, "Redevance calcul\xE9e"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 20,
+      color: DQ.accent2,
+      fontWeight: 500
+    }
+  }, "0 $"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 18
+    }
+  }, "\u25CE"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontWeight: 500,
+      fontSize: 12,
+      letterSpacing: 1
+    }
+  }, "BILAN FISCAL FINAL")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px 0",
+      borderBottom: `1px solid ${DQ.border}`,
+      color: DQ.muted
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Imp\xF4t sur b\xE9n\xE9fices"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, fmt(impB), " $")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px 0",
+      borderBottom: `1px solid ${DQ.border}`,
+      color: DQ.muted
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "Imp\xF4t sur lib\xE9ralit\xE9s"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, "0 $")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginTop: 12,
+      paddingTop: 12,
+      borderTop: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase"
+    }
+  }, "Engagement total"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 14,
+      letterSpacing: 1
+    }
+  }, "\xC0 ACQUITTER SANS D\xC9LAI")), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 26,
+      fontWeight: 500,
+      color: DQ.accent
+    }
+  }, fmt(impB), " $")))));
+}
+
+// ── Équipe (Comptes + Recrutement fusionnés) ─────
+function PageEquipe({
+  roster,
+  setRoster,
+  semaine,
+  setSemaine,
+  weeks,
+  setWeeks,
+  curIdx,
+  comptes,
+  setComptes
+}) {
+  const [srch, setSrch] = useState("");
+  const [fc, setFc] = useState("all");
+  const [showNew, setShowNew] = useState(false);
+  const [editId, setEditId] = useState(null); // id compte en cours d'édition
+  const [form, setForm] = useState({
+    prenom: "",
+    nom: "",
+    login: "",
+    mdp: "",
+    role: "employe",
+    minerai: "Charbon",
+    grade: "Expérimenté",
+    casier: ""
+  });
+  const [err, setErr] = useState("");
+  const [ok, setOk] = useState(false);
+  const DGO = ["Patronne", "Co Patron", "Lead Manager", "Manager", "RH"];
+  const GFO = ["Expérimenté", "Confirmé", "Stagiaire"];
+
+  // Construit la vue fusionnée : un objet par membre du roster enrichi avec le compte si existant
+  const membres = useMemo(() => {
+    return roster.map(r => {
+      const compte = comptes.find(c => c.login && ((c.nom || "").toLowerCase() === r.nom.split(" ").slice(-1)[0].toLowerCase() || `${c.prenom} ${c.nom}`.toLowerCase() === r.nom.toLowerCase()));
+      return {
+        ...r,
+        compte: compte || null
+      };
+    }).filter(m => {
+      const fc2 = fc === "all" || m.cat === fc;
+      const fs = !srch || (m.nom || "").toLowerCase().includes(srch.toLowerCase()) || (m.casier || "").includes(srch);
+      return fc2 && fs;
+    }).sort((a, b) => CAT_ORDER.indexOf(a.cat) - CAT_ORDER.indexOf(b.cat));
+  }, [roster, comptes, fc, srch]);
+  function openNew() {
+    setForm({
+      prenom: "",
+      nom: "",
+      login: "",
+      mdp: "",
+      role: "employe",
+      minerai: "Charbon",
+      grade: "Expérimenté",
+      casier: ""
+    });
+    setErr("");
+    setShowNew(true);
+    setEditId(null);
+  }
+  function openEdit(r) {
+    const c = comptes.find(cc => `${cc.prenom} ${cc.nom}`.toLowerCase() === r.nom.toLowerCase() || (cc.nom || "").toLowerCase() === r.nom.split(" ").slice(-1)[0].toLowerCase());
+    setForm({
+      prenom: c?.prenom || r.nom.split(" ")[0] || "",
+      nom: c?.nom || r.nom.split(" ").slice(1).join(" ") || r.nom,
+      login: c?.login || "",
+      mdp: c?.mdp || "",
+      role: c?.role || "employe",
+      minerai: r.cat !== "Direction" ? r.cat : "",
+      grade: r.grade,
+      casier: r.casier
+    });
+    setEditId(c?.id || null);
+    setErr("");
+    setShowNew(true);
+  }
+  function save() {
+    if (!form.prenom || !form.nom || !form.casier) {
+      setErr("Prénom, nom et casier requis");
+      return;
+    }
+    if (!form.login || !form.mdp) {
+      setErr("Login et mot de passe requis");
+      return;
+    }
+    const nomComplet = `${form.prenom} ${form.nom}`;
+    const cat = form.role === "direction" ? "Direction" : form.minerai || "Charbon";
+    const grade = form.grade;
+
+    // Vérif login unique (sauf si on édite ce même compte)
+    const loginUsed = comptes.find(c => c.login === form.login && c.id !== editId);
+    if (loginUsed) {
+      setErr("Ce login est déjà utilisé");
+      return;
+    }
+
+    // 1. Mettre à jour ou créer le compte
+    if (editId) {
+      setComptes(p => p.map(c => c.id === editId ? {
+        ...c,
+        prenom: form.prenom,
+        nom: form.nom,
+        login: form.login,
+        mdp: form.mdp,
+        role: form.role,
+        minerai: form.role === "employe" ? form.minerai : null,
+        grade: form.role === "employe" ? form.grade : null
+      } : c));
+    } else {
+      const newId = Math.max(...comptes.map(c => c.id), 0) + 1;
+      setComptes(p => [...p, {
+        id: newId,
+        prenom: form.prenom,
+        nom: form.nom,
+        login: form.login,
+        mdp: form.mdp,
+        role: form.role,
+        minerai: form.role === "employe" ? form.minerai : null,
+        grade: form.role === "employe" ? form.grade : null
+      }]);
+    }
+
+    // 2. Mettre à jour ou créer dans le roster
+    const existingRoster = roster.find(r => r.casier === form.casier);
+    if (existingRoster) {
+      setRoster(r => r.map(m => m.casier === form.casier ? {
+        ...m,
+        nom: nomComplet,
+        cat,
+        grade
+      } : m));
+    } else {
+      setRoster(r => [...r, {
+        casier: form.casier,
+        cat,
+        grade,
+        nom: nomComplet
+      }]);
+    }
+
+    // 3. Mettre à jour ou créer la ligne dans la semaine courante
+    const ligne = {
+      casier: form.casier,
+      categorie: cat,
+      grade,
+      nom: nomComplet,
+      menus: false,
+      exports: 0,
+      quantite: 0,
+      frais: 0,
+      prime: 0,
+      status: "",
+      commentaire: ""
+    };
+    setWeeks(ws => ws.map((w, i) => {
+      if (i !== curIdx) return w;
+      const exists = w.data.find(m => m.casier === form.casier);
+      if (exists) return {
+        ...w,
+        data: w.data.map(m => m.casier === form.casier ? {
+          ...m,
+          nom: nomComplet,
+          categorie: cat,
+          grade
+        } : m)
+      };
+      return {
+        ...w,
+        data: [...w.data, ligne]
+      };
+    }));
+    setOk(true);
+    setShowNew(false);
+    setTimeout(() => setOk(false), 3000);
+  }
+  function deleteMember(casier) {
+    const r = roster.find(m => m.casier === casier);
+    if (!r) return;
+    setRoster(p => p.filter(m => m.casier !== casier));
+    // Supprimer le compte associé
+    const c = comptes.find(cc => `${cc.prenom} ${cc.nom}`.toLowerCase() === r.nom.toLowerCase() || (cc.nom || "").toLowerCase() === r.nom.split(" ").slice(-1)[0].toLowerCase());
+    if (c) setComptes(p => p.filter(x => x.id !== c.id));
+    // Retirer de la semaine
+    setWeeks(ws => ws.map((w, i) => i === curIdx ? {
+      ...w,
+      data: w.data.filter(m => m.casier !== casier)
+    } : w));
+  }
+  const rcCol = {
+    direction: DQ.red,
+    gestion: DQ.accent,
+    employe: DQ.blue
+  };
+  const rcLbl = {
+    direction: "Direction",
+    gestion: "Gestion",
+    employe: "Employé"
+  };
+  const groups = {};
+  CAT_ORDER.forEach(c => {
+    groups[c] = membres.filter(m => m.cat === c);
+  });
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 16,
+      flexWrap: "wrap",
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2
+    }
+  }, "\xC9quipe"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase"
+    }
+  }, roster.length, " membres \xB7 ", comptes.filter(c => c.role === "employe").length, " comptes employ\xE9s")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8
+    }
+  }, ok && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 11,
+      color: DQ.green,
+      padding: "6px 10px",
+      background: "rgba(90,140,74,.1)",
+      border: "1px solid rgba(90,140,74,.3)",
+      borderRadius: 3
+    }
+  }, "\u2713 Sauvegard\xE9"), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: openNew
+  }, "+ Nouveau membre"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      flexWrap: "wrap",
+      marginBottom: 14,
+      alignItems: "center"
+    }
+  }, ["all", ...CAT_ORDER].map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    className: `fbtn c${c.replace(/ /g, "")}${fc === c ? " on" : ""}`,
+    onClick: () => setFc(c)
+  }, c === "all" ? "Tous" : c)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      background: "rgba(212,160,23,.06)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      padding: "4px 10px",
+      flex: 1,
+      maxWidth: 260,
+      marginLeft: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 13
+    }
+  }, "\uD83D\uDD0D"), /*#__PURE__*/React.createElement("input", {
+    value: srch,
+    onChange: e => setSrch(e.target.value),
+    placeholder: "Nom, casier...",
+    style: {
+      background: "none",
+      border: "none",
+      color: DQ.text,
+      fontFamily: "'Barlow Condensed',sans-serif",
+      fontSize: 14,
+      outline: "none",
+      width: "100%"
+    }
+  }))), CAT_ORDER.map(cat => {
+    const g = groups[cat] || [];
+    if (!g.length) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      key: cat
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 10,
+        letterSpacing: 3,
+        textTransform: "uppercase",
+        padding: "10px 0 5px",
+        color: DQ.muted,
+        borderBottom: `1px solid ${DQ.border}`,
+        marginBottom: 10,
+        marginTop: 14,
+        display: "flex",
+        alignItems: "center",
+        gap: 7
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 9,
+        height: 9,
+        borderRadius: "50%",
+        background: CAT_COL[cat]
+      }
+    }), cat, /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: "auto"
+      }
+    }, g.length, " membre", g.length > 1 ? "s" : "")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))",
+        gap: 10,
+        marginBottom: 8
+      }
+    }, g.map(r => {
+      const c = r.compte;
+      const inSem = !!(semaine?.data || []).find(m => m.casier === r.casier);
+      return /*#__PURE__*/React.createElement("div", {
+        key: r.casier,
+        style: {
+          background: DQ.dark,
+          border: `1px solid ${c ? DQ.border : "rgba(212,160,23,.1)"}`,
+          borderRadius: 5,
+          padding: "12px 14px",
+          position: "relative",
+          transition: "border-color .15s"
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 10
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: 40,
+          height: 40,
+          borderRadius: 4,
+          background: CAT_COL[r.cat] || "#666",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: "'IBM Plex Mono',monospace",
+          fontSize: 13,
+          fontWeight: 500,
+          color: "#fff",
+          flexShrink: 0
+        }
+      }, r.casier), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1,
+          minWidth: 0
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 14,
+          fontWeight: 600,
+          color: DQ.white,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap"
+        }
+      }, r.nom), /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 11,
+          color: DQ.muted,
+          marginTop: 1
+        }
+      }, r.grade, " \xB7 ", /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: CAT_COL[r.cat]
+        }
+      }, r.cat))), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 4
+        }
+      }, c && /*#__PURE__*/React.createElement("span", {
+        style: {
+          display: "inline-block",
+          padding: "1px 6px",
+          borderRadius: 2,
+          fontSize: 9,
+          fontWeight: 700,
+          letterSpacing: 1,
+          textTransform: "uppercase",
+          background: (rcCol[c.role] || DQ.muted) + "22",
+          color: rcCol[c.role] || DQ.muted,
+          border: `1px solid ${rcCol[c.role] || DQ.muted}44`
+        }
+      }, rcLbl[c.role] || c.role), inSem && /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 9,
+          color: DQ.green,
+          fontFamily: "'IBM Plex Mono',monospace",
+          background: "rgba(90,140,74,.12)",
+          padding: "1px 5px",
+          borderRadius: 2
+        }
+      }, "\u2713 Sem."))), c ? /*#__PURE__*/React.createElement("div", {
+        style: {
+          background: DQ.darker,
+          borderRadius: 3,
+          padding: "8px 10px",
+          marginBottom: 10
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 11,
+          marginBottom: 3
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: DQ.muted
+        }
+      }, "Login"), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          color: DQ.accent
+        }
+      }, c.login)), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 11
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: DQ.muted
+        }
+      }, "Mot de passe"), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontFamily: "'IBM Plex Mono',monospace",
+          color: DQ.muted,
+          letterSpacing: 2
+        }
+      }, "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"))) : /*#__PURE__*/React.createElement("div", {
+        style: {
+          background: "rgba(212,160,23,.04)",
+          border: "1px dashed rgba(212,160,23,.2)",
+          borderRadius: 3,
+          padding: "6px 10px",
+          marginBottom: 10,
+          fontSize: 11,
+          color: DQ.muted,
+          textAlign: "center"
+        }
+      }, "Pas de compte \u2014 cliquez Modifier"), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          gap: 6
+        }
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "btnG",
+        style: {
+          flex: 1,
+          fontSize: 11,
+          padding: "4px 0",
+          textAlign: "center"
+        },
+        onClick: () => openEdit(r)
+      }, "\u270F Modifier"), /*#__PURE__*/React.createElement("button", {
+        style: {
+          background: "transparent",
+          border: "1px solid rgba(184,64,64,.4)",
+          color: "#d47070",
+          fontFamily: "'Barlow Condensed',sans-serif",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: 1,
+          textTransform: "uppercase",
+          padding: "4px 10px",
+          borderRadius: 3,
+          cursor: "pointer"
+        },
+        onClick: () => deleteMember(r.casier)
+      }, "\u2715")));
+    })));
+  }), !membres.length && /*#__PURE__*/React.createElement("div", {
+    className: "empty",
+    style: {
+      padding: 60
+    }
+  }, "Aucun r\xE9sultat"), showNew && /*#__PURE__*/React.createElement("div", {
+    className: "ov"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    style: {
+      width: 520,
+      maxWidth: "95vw"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mhdr"
+  }, /*#__PURE__*/React.createElement("span", null, editId ? "✏ Modifier le membre" : "+ Nouveau membre"), /*#__PURE__*/React.createElement("button", {
+    className: "cbtn",
+    onClick: () => setShowNew(false)
+  }, "\xD7")), /*#__PURE__*/React.createElement("div", {
+    className: "mbody",
+    style: {
+      maxHeight: "70vh",
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      marginBottom: 12,
+      opacity: .8
+    }
+  }, "Identit\xE9"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10,
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Pr\xE9nom *"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: form.prenom,
+    onChange: e => setForm(p => ({
+      ...p,
+      prenom: e.target.value
+    })),
+    placeholder: "Jean"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Nom *"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: form.nom,
+    onChange: e => setForm(p => ({
+      ...p,
+      nom: e.target.value
+    })),
+    placeholder: "Dupont"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Casier *"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: form.casier,
+    onChange: e => setForm(p => ({
+      ...p,
+      casier: e.target.value
+    })),
+    placeholder: "Ex: 42"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "R\xF4le"), /*#__PURE__*/React.createElement("select", {
+    className: "sel",
+    style: {
+      width: "100%"
+    },
+    value: form.role,
+    onChange: e => setForm(p => ({
+      ...p,
+      role: e.target.value
+    }))
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "employe"
+  }, "Employ\xE9"), /*#__PURE__*/React.createElement("option", {
+    value: "gestion"
+  }, "Gestion"), /*#__PURE__*/React.createElement("option", {
+    value: "direction"
+  }, "Direction")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      marginBottom: 12,
+      opacity: .8,
+      borderTop: `1px solid ${DQ.border}`,
+      paddingTop: 14
+    }
+  }, "Poste"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10,
+      marginBottom: 16
+    }
+  }, form.role !== "direction" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Minerai"), /*#__PURE__*/React.createElement("select", {
+    className: "sel",
+    style: {
+      width: "100%"
+    },
+    value: form.minerai,
+    onChange: e => setForm(p => ({
+      ...p,
+      minerai: e.target.value
+    }))
+  }, MINERAIS.map(m => /*#__PURE__*/React.createElement("option", {
+    key: m,
+    value: m
+  }, m)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Grade"), /*#__PURE__*/React.createElement("select", {
+    className: "sel",
+    style: {
+      width: "100%"
+    },
+    value: form.grade,
+    onChange: e => setForm(p => ({
+      ...p,
+      grade: e.target.value
+    }))
+  }, (form.role === "direction" ? ["Patronne", "Co Patron", "Lead Manager", "Manager", "RH"] : ["Expérimenté", "Confirmé", "Stagiaire"]).map(g => /*#__PURE__*/React.createElement("option", {
+    key: g,
+    value: g
+  }, g))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      marginBottom: 12,
+      opacity: .8,
+      borderTop: `1px solid ${DQ.border}`,
+      paddingTop: 14
+    }
+  }, "Identifiants de connexion"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Login *"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: form.login,
+    onChange: e => setForm(p => ({
+      ...p,
+      login: e.target.value
+    })),
+    placeholder: "jean.dupont"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      display: "block",
+      marginBottom: 4
+    }
+  }, "Mot de passe *"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    type: "password",
+    value: form.mdp,
+    onChange: e => setForm(p => ({
+      ...p,
+      mdp: e.target.value
+    })),
+    placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
+  }))), err && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#d47070",
+      fontSize: 12,
+      fontFamily: "'IBM Plex Mono',monospace",
+      marginTop: 12
+    }
+  }, err)), /*#__PURE__*/React.createElement("div", {
+    className: "mftr"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btnG",
+    onClick: () => setShowNew(false)
+  }, "Annuler"), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: save
+  }, editId ? "✓ Enregistrer" : "+ Créer le membre")))));
+}
+
+// ── Tchat ─────────────────────────────────────────
+function PageTchat({
+  user,
+  comptes
+}) {
+  const [msgs, setMsgs] = useState(CHAT_INIT);
+  const [txt, setTxt] = useState("");
+  const bot = useRef(null);
+  useEffect(() => {
+    bot.current?.scrollIntoView({
+      behavior: "smooth"
+    });
+  }, [msgs]);
+  function send() {
+    if (!txt.trim()) return;
+    setMsgs(p => [...p, {
+      id: Date.now(),
+      from: user.id,
+      text: txt.trim(),
+      date: new Date().toISOString(),
+      role: user.role
+    }]);
+    setTxt("");
+  }
+  const rcCol = {
+    direction: DQ.red,
+    gestion: DQ.accent,
+    employe: DQ.blue
+  };
+  const rcLbl = {
+    direction: "Direction",
+    gestion: "Gestion",
+    employe: "Employé"
+  };
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 2
+    }
+  }, "Tchat interne"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 16
+    }
+  }, "Davis Quartz Mining Co."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      display: "flex",
+      flexDirection: "column",
+      height: "62vh"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      overflowY: "auto",
+      padding: 16
+    }
+  }, msgs.map(msg => {
+    const sndr = comptes.find(c => c.id === msg.from);
+    const isMe = msg.from === user.id;
+    const col = rcCol[msg.role] || DQ.muted;
+    return /*#__PURE__*/React.createElement("div", {
+      key: msg.id,
+      style: {
+        display: "flex",
+        flexDirection: isMe ? "row-reverse" : "row",
+        gap: 10,
+        marginBottom: 14,
+        alignItems: "flex-end"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 32,
+        height: 32,
+        borderRadius: 3,
+        background: `${col}33`,
+        border: `1px solid ${col}55`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11,
+        color: col,
+        flexShrink: 0
+      }
+    }, sndr?.id || "?"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxWidth: "65%"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: DQ.muted,
+        fontFamily: "'IBM Plex Mono',monospace",
+        marginBottom: 3,
+        textAlign: isMe ? "right" : "left"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: col,
+        fontWeight: 600
+      }
+    }, sndr?.prenom, " ", sndr?.nom), /*#__PURE__*/React.createElement("span", {
+      style: {
+        marginLeft: 6
+      }
+    }, fmtDate(msg.date)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "inline-block",
+        padding: "1px 5px",
+        borderRadius: 2,
+        fontSize: 9,
+        fontWeight: 700,
+        letterSpacing: 1,
+        textTransform: "uppercase",
+        background: col + "22",
+        color: col,
+        border: `1px solid ${col}44`,
+        marginLeft: 6
+      }
+    }, rcLbl[msg.role] || msg.role)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: isMe ? `${DQ.accent}18` : DQ.darker,
+        border: `1px solid ${isMe ? DQ.accent + "44" : DQ.border}`,
+        borderRadius: isMe ? "8px 8px 2px 8px" : "8px 8px 8px 2px",
+        padding: "10px 14px",
+        fontSize: 13,
+        color: DQ.text,
+        lineHeight: 1.5
+      }
+    }, msg.text)));
+  }), /*#__PURE__*/React.createElement("div", {
+    ref: bot
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      padding: "12px 16px",
+      display: "flex",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    style: {
+      flex: 1
+    },
+    value: txt,
+    onChange: e => setTxt(e.target.value),
+    placeholder: "\xC9crire un message...",
+    onKeyDown: e => e.key === "Enter" && send()
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: send
+  }, "Envoyer \u27A4"))));
+}
+
+// ── Déclarer (employé) ────────────────────────────
+function PageDeclarer({
+  user,
+  onAdd
+}) {
+  const [qte, setQte] = useState("");
+  const [ventesC, setVentesC] = useState(""); // vente de cartons → exports + bonus salaire (tous)
+  const [cartNV, setCartNV] = useState(""); // cartons produits non vendus (Or uniquement, info seule)
+  const [ok, setOk] = useState(false);
+  const isOr = user.minerai === "Or";
+  const prix = (PRICES_INIT[user.minerai] || {})[user.grade] || 0;
+  const qN = Number(qte) || 0;
+  const vN = Number(ventesC) || 0; // ventes cartons = exports ET bonus salaire
+  const nvN = Number(cartNV) || 0; // non vendus = info seulement, pas d'impact calcul
+  // Le bonus salaire est basé sur les cartons VENDUS (vN)
+  const sal = calcSalD(qN, vN, user.minerai, user.grade);
+  const quota = QUOTAS[user.minerai] || 0;
+  const qOk = quota > 0 && qN >= quota;
+  const col = CAT_COL[user.minerai] || DQ.accent;
+  function sub() {
+    if (!qN || qN <= 0) return;
+    // cartons = ventes (pour bonus salaire), ventesCartons = exports semaine
+    onAdd({
+      employeId: user.id,
+      minerai: user.minerai,
+      grade: user.grade,
+      qte: qN,
+      cartons: vN,
+      ventesCartons: vN
+    });
+    setOk(true);
+    setQte("");
+    setVentesC("");
+    setCartNV("");
+    setTimeout(() => setOk(false), 3000);
+  }
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 2
+    }
+  }, "D\xE9clarer une production"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 20
+    }
+  }, "Saisissez votre production de la semaine"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 520
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      marginBottom: 18,
+      padding: "10px 12px",
+      background: `${col}11`,
+      border: `1px solid ${col}33`,
+      borderRadius: 3
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      borderRadius: "50%",
+      background: col,
+      flexShrink: 0
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 15,
+      fontWeight: 500,
+      color: col
+    }
+  }, user.minerai), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: DQ.muted,
+      marginLeft: 4
+    }
+  }, user.grade, " \xB7 ", prix, " $/unit\xE9")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Quantit\xE9 produite *"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    },
+    type: "number",
+    min: "1",
+    value: qte,
+    onChange: e => setQte(e.target.value),
+    placeholder: `Ex: ${fmt(quota)}`
+  }), quota > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: qOk ? "#7dba65" : DQ.muted,
+      marginTop: 4,
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, "Quota : ", fmt(quota), qOk && " ✓ ATTEINT")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: isOr ? 14 : 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.accent2,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Vente de cartons"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      borderColor: "rgba(200,121,42,.4)"
+    },
+    type: "number",
+    min: "0",
+    value: ventesC,
+    onChange: e => setVentesC(e.target.value),
+    placeholder: "Nb cartons vendus"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      marginTop: 4
+    }
+  }, "S'ajoute aux ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: DQ.accent2
+    }
+  }, "Exports"), " du tableau semaine", " · ", "100 vendus = ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: DQ.accent
+    }
+  }, "+2 500 $"), " bonus salaire")), isOr && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 0,
+      marginTop: 14,
+      padding: "10px 12px",
+      background: "rgba(212,160,23,.04)",
+      border: `1px solid rgba(212,160,23,.15)`,
+      borderRadius: 3
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Cartons produits non vendus", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      marginLeft: 6,
+      fontSize: 9,
+      fontWeight: 400,
+      letterSpacing: 0,
+      textTransform: "none"
+    }
+  }, "Or uniquement \u2014 informatif")), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace"
+    },
+    type: "number",
+    min: "0",
+    value: cartNV,
+    onChange: e => setCartNV(e.target.value),
+    placeholder: "Nb cartons en stock"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      marginTop: 4
+    }
+  }, "Non comptabilis\xE9 dans les exports ni le salaire")), (qN > 0 || vN > 0) && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: DQ.darker,
+      borderRadius: 3,
+      padding: 12,
+      marginBottom: 14,
+      marginTop: 14
+    }
+  }, qN > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "6px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 12
+    }
+  }, "Quantit\xE9"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: qOk ? "#7dba65" : DQ.text,
+      fontWeight: qOk ? 700 : 400
+    }
+  }, fmt(qN), qOk ? " ✓" : "")), vN > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "6px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 12
+    }
+  }, "Vente cartons \u2192 Exports"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: DQ.accent2
+    }
+  }, vN, " carton", vN > 1 ? "s" : "")), vN > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "6px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 12
+    }
+  }, "Bonus salaire cartons"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: DQ.accent
+    }
+  }, "+", fmt(Math.floor(vN / 100) * 2500), " $")), isOr && nvN > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "6px 0",
+      borderBottom: `1px solid ${DQ.border}`
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted,
+      fontSize: 12
+    }
+  }, "Cartons non vendus (stock)"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: DQ.muted
+    }
+  }, nvN, " carton", nvN > 1 ? "s" : "")), qN > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "6px 0"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 700
+    }
+  }, "Salaire estim\xE9"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 16,
+      color: DQ.accent,
+      fontWeight: 500
+    }
+  }, fmt(sal), " $"))), ok && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: DQ.green,
+      fontSize: 13,
+      fontFamily: "'IBM Plex Mono',monospace",
+      marginBottom: 10
+    }
+  }, "\u2713 D\xE9claration enregistr\xE9e \u2014 tableau semaine mis \xE0 jour !"), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    onClick: sub
+  }, "\u26CF Valider la d\xE9claration"))));
+}
+
+// ── Mes déclarations (employé) ────────────────────
+function PageMesDecls({
+  user,
+  decls
+}) {
+  const miennes = decls.filter(d => d.employeId === user.id).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const totSal = miennes.reduce((s, d) => s + calcSalD(d.qte, d.cartons, d.minerai, d.grade), 0);
+  const totQte = miennes.reduce((s, d) => s + d.qte, 0);
+  const col = CAT_COL[user.minerai] || DQ.accent;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 2,
+      marginBottom: 16
+    }
+  }, "Mes d\xE9clarations"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3,1fr)",
+      gap: 12,
+      marginBottom: 16
+    }
+  }, [[col, "⛏", "Total quantité", fmt(totQte)], [DQ.green, "💰", "Salaires estimés", fmt(totSal) + " $"], [DQ.accent, "📋", "Déclarations", miennes.length]].map(([ic, ico, lbl, val]) => /*#__PURE__*/React.createElement("div", {
+    key: lbl,
+    style: {
+      background: DQ.dark,
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 4,
+      padding: "14px 18px",
+      display: "flex",
+      alignItems: "center",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      background: ic + "22",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: 18,
+      flexShrink: 0
+    }
+  }, ico), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      letterSpacing: 2
+    }
+  }, lbl), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 20,
+      fontWeight: 500,
+      color: ic
+    }
+  }, val))))), /*#__PURE__*/React.createElement("div", {
+    className: "twrap"
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      minWidth: 600
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, ["Date", "Minerai", "Grade", "Quantité", "Cartons", "Salaire estimé"].map(h => /*#__PURE__*/React.createElement("th", {
+    key: h
+  }, h)))), /*#__PURE__*/React.createElement("tbody", null, miennes.length === 0 ? /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: 6,
+    className: "empty"
+  }, "Aucune d\xE9claration")) : miennes.map(d => {
+    const sal = calcSalD(d.qte, d.cartons, d.minerai, d.grade);
+    const ok = QUOTAS[d.minerai] > 0 && d.qte >= QUOTAS[d.minerai];
+    return /*#__PURE__*/React.createElement("tr", {
+      key: d.id,
+      className: "dqR"
+    }, /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 11
+      }
+    }, fmtDate(d.date)), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 7,
+        height: 7,
+        borderRadius: "50%",
+        background: CAT_COL[d.minerai]
+      }
+    }), d.minerai)), /*#__PURE__*/React.createElement("td", {
+      style: {
+        color: DQ.muted
+      }
+    }, d.grade), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: ok ? "#7dba65" : DQ.text,
+        fontWeight: ok ? 700 : 400
+      }
+    }, fmt(d.qte), ok ? " ✓" : ""), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: DQ.accent2
+      }
+    }, d.cartons > 0 ? d.cartons : "—"), /*#__PURE__*/React.createElement("td", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        color: DQ.green,
+        fontWeight: 500
+      }
+    }, fmt(sal), " $"));
+  })))));
+}
+
+// ── Sidebar ───────────────────────────────────────
+function Sidebar({
+  user,
+  page,
+  setPage,
+  semaine,
+  roster
+}) {
+  const role = user.role;
+  const navDir = [{
+    k: "semaine",
+    l: "Semaine",
+    i: "📊"
+  }, {
+    k: "equipe",
+    l: "Équipe",
+    i: "👥"
+  }, {
+    k: "archives",
+    l: "Archives",
+    i: "🗄"
+  }, {
+    k: "avertissements",
+    l: "Avertissements",
+    i: "⚠️"
+  }, {
+    k: "declarations",
+    l: "Déclarations",
+    i: "📋"
+  }, {
+    k: "recap",
+    l: "Récapitulatif",
+    i: "📈"
+  }, {
+    k: "impots",
+    l: "Impôts",
+    i: "🔒"
+  }, {
+    k: "tchat",
+    l: "Tchat",
+    i: "💬"
+  }];
+  const navGest = navDir.filter(n => n.k !== "impots");
+  const navEmp = [{
+    k: "declarer",
+    l: "Déclarer",
+    i: "⛏"
+  }, {
+    k: "mes-decls",
+    l: "Mes déclarations",
+    i: "📋"
+  }, {
+    k: "tchat",
+    l: "Tchat",
+    i: "💬"
+  }];
+  const navs = {
+    direction: navDir,
+    gestion: navGest,
+    employe: navEmp
+  };
+  const data = semaine?.data || [];
+  const isStaff = role === "direction" || role === "gestion";
+  const totSal = data.reduce((s, m) => s + calcSal(m), 0);
+  const totCA = data.reduce((s, m) => s + (m.exports || 0) * CARTON_RECAP, 0);
+  const totF = data.reduce((s, m) => s + (m.frais || 0), 0);
+  const totP = data.reduce((s, m) => s + (m.prime || 0), 0);
+  return /*#__PURE__*/React.createElement("aside", {
+    style: {
+      width: 220,
+      minWidth: 220,
+      background: `linear-gradient(180deg,${DQ.dark},#221407)`,
+      borderRight: `1px solid ${DQ.border}`,
+      padding: "18px 0",
+      display: "flex",
+      flexDirection: "column",
+      overflowY: "auto",
+      flexShrink: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 3,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      padding: "0 16px 8px",
+      opacity: .8,
+      display: "block"
+    }
+  }, "Navigation"), (navs[role] || []).map(n => /*#__PURE__*/React.createElement("div", {
+    key: n.k,
+    className: `dq-nav${page === n.k ? " act" : ""}`,
+    onClick: () => setPage(n.k)
+  }, /*#__PURE__*/React.createElement("span", null, n.i), n.l)), isStaff && semaine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      margin: "12px 0 8px"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 3,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      padding: "0 16px 6px",
+      opacity: .8
+    }
+  }, "Effectif"), /*#__PURE__*/React.createElement("div", {
+    className: "srow2"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted
+    }
+  }, "Total membres"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: DQ.accent,
+      fontWeight: 500,
+      fontSize: 15
+    }
+  }, roster.length)), [["Expérimenté", roster.filter(r => r.grade === "Expérimenté").length], ["Confirmé", roster.filter(r => r.grade === "Confirmé").length], ["Stagiaire", roster.filter(r => r.grade === "Stagiaire").length]].map(([l, v]) => /*#__PURE__*/React.createElement("div", {
+    key: l,
+    className: "srow2"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted
+    }
+  }, l), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: DQ.text
+    }
+  }, v))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      margin: "8px 0"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 3,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      padding: "0 16px 6px",
+      opacity: .8
+    }
+  }, "Effectif minerai"), ["Charbon", "Fer", "Cuivre", "Or", "Aluminium"].map(cat => {
+    const mb = data.filter(m => m.categorie === cat);
+    const tot = mb.length,
+      max = CAT_MAX[cat] || 1,
+      full = tot >= max,
+      pct = Math.min(100, Math.round(tot / max * 100));
+    const exp = mb.filter(m => m.grade === "Expérimenté").length,
+      conf = mb.filter(m => m.grade === "Confirmé").length,
+      stag = mb.filter(m => m.grade === "Stagiaire").length;
+    return /*#__PURE__*/React.createElement("div", {
+      key: cat,
+      style: {
+        padding: "4px 16px",
+        marginBottom: 5
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 7,
+        fontSize: 12,
+        marginBottom: 3
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 7,
+        height: 7,
+        borderRadius: "50%",
+        background: CAT_COL[cat],
+        flexShrink: 0,
+        display: "inline-block"
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1,
+        color: DQ.text
+      }
+    }, cat), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontFamily: "'IBM Plex Mono',monospace",
+        fontSize: 12,
+        fontWeight: 600,
+        color: full ? "#d47070" : DQ.accent
+      }
+    }, tot, "/", max)), /*#__PURE__*/React.createElement("div", {
+      className: "eff-bw"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "eff-b",
+      style: {
+        width: pct + "%",
+        background: full ? "#B84040" : CAT_COL[cat]
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 5,
+        flexWrap: "wrap"
+      }
+    }, exp > 0 && /*#__PURE__*/React.createElement("span", {
+      className: "eff-gp"
+    }, "Exp:", exp), conf > 0 && /*#__PURE__*/React.createElement("span", {
+      className: "eff-gp"
+    }, "Conf:", conf), stag > 0 && /*#__PURE__*/React.createElement("span", {
+      className: "eff-gp"
+    }, "Stag:", stag), full && /*#__PURE__*/React.createElement("span", {
+      className: "eff-gp",
+      style: {
+        color: "#d47070",
+        borderColor: "rgba(184,64,64,.4)"
+      }
+    }, "COMPLET")));
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      margin: "8px 0"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 3,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      padding: "0 16px 6px",
+      opacity: .8
+    }
+  }, "Semaine courante"), /*#__PURE__*/React.createElement("div", {
+    className: "sbox"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, "Total Salaires"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 18,
+      fontWeight: 500,
+      color: DQ.accent
+    }
+  }, fmt(totSal), " $")), /*#__PURE__*/React.createElement("div", {
+    className: "sbox"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, "CA Carton"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 18,
+      fontWeight: 500,
+      color: DQ.accent2
+    }
+  }, fmt(totCA), " $")), /*#__PURE__*/React.createElement("div", {
+    className: "sbox"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, "Notes de Frais"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 18,
+      fontWeight: 500,
+      color: DQ.accent
+    }
+  }, fmt(totF), " $")), /*#__PURE__*/React.createElement("div", {
+    className: "sbox"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 3
+    }
+  }, "Primes"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 18,
+      fontWeight: 500,
+      color: "#ce93d8"
+    }
+  }, fmt(totP), " $")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      borderTop: `1px solid ${DQ.border}`,
+      margin: "8px 0"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 9,
+      letterSpacing: 3,
+      color: DQ.accent,
+      textTransform: "uppercase",
+      padding: "0 16px 6px",
+      opacity: .8
+    }
+  }, "Status semaine"), [["Présents", data.filter(m => m.status !== "Absent" && m.status !== "Licencié").length, DQ.text], ["Absents", data.filter(m => m.status === "Absent").length, DQ.blue], ["Avert.", data.filter(m => m.status === "Avertissement").length, DQ.accent], ["Primes", data.filter(m => m.status === "Prime").length, "#ce93d8"], ["Nouveaux", data.filter(m => m.status === "Nouveau").length, DQ.green]].map(([l, v, c]) => /*#__PURE__*/React.createElement("div", {
+    key: l,
+    className: "srow2"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.muted
+    }
+  }, l), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      color: c
+    }
+  }, v)))), role === "employe" && user?.minerai && /*#__PURE__*/React.createElement("div", {
+    style: {
+      margin: "16px 12px 0",
+      padding: 10,
+      background: "rgba(212,160,23,.07)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 4
+    }
+  }, "Minerai affili\xE9"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 8,
+      height: 8,
+      borderRadius: "50%",
+      background: CAT_COL[user.minerai],
+      flexShrink: 0
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 13,
+      color: CAT_COL[user.minerai],
+      fontWeight: 500
+    }
+  }, user.minerai)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: DQ.muted,
+      marginTop: 3
+    }
+  }, user.grade), user.minerai === "Or" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: DQ.accent2,
+      marginTop: 3
+    }
+  }, "+ Exports Cartons")));
+}
+
+// ── Login ─────────────────────────────────────────
+function Login({
+  comptes,
+  onLogin
+}) {
+  const [login, setLogin] = useState("");
+  const [mdp, setMdp] = useState("");
+  const [err, setErr] = useState("");
+  function go() {
+    const c = comptes.find(x => x.login === login && x.mdp === mdp);
+    if (c) onLogin(c);else {
+      setErr("⚠ Identifiants incorrects");
+      setTimeout(() => setErr(""), 3000);
+    }
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: `radial-gradient(ellipse at 50% 30%,${DQ.dark},${DQ.darker} 70%)`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: `linear-gradient(160deg,${DQ.mid},${DQ.dark})`,
+      border: "1px solid rgba(212,160,23,.35)",
+      borderRadius: 8,
+      padding: "36px 40px",
+      width: 380,
+      boxShadow: "0 20px 60px rgba(0,0,0,.7)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 28,
+      fontWeight: 700,
+      letterSpacing: 5,
+      textTransform: "uppercase",
+      textAlign: "center",
+      color: DQ.white,
+      marginBottom: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent,
+      opacity: .6,
+      fontSize: 11,
+      verticalAlign: "middle",
+      margin: "0 8px"
+    }
+  }, "\u25C6"), "DAVIS ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent
+    }
+  }, "QUARTZ"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent,
+      opacity: .6,
+      fontSize: 11,
+      verticalAlign: "middle",
+      margin: "0 8px"
+    }
+  }, "\u25C6")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      color: DQ.muted,
+      fontSize: 12,
+      letterSpacing: 2,
+      textTransform: "uppercase",
+      marginBottom: 24
+    }
+  }, "Syst\xE8me de Gestion"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginBottom: 5
+    }
+  }, "Identifiant"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    value: login,
+    onChange: e => setLogin(e.target.value),
+    placeholder: "Login",
+    onKeyDown: e => e.key === "Enter" && go()
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: DQ.muted,
+      textTransform: "uppercase",
+      marginTop: 12,
+      marginBottom: 5
+    }
+  }, "Mot de passe"), /*#__PURE__*/React.createElement("input", {
+    className: "inp",
+    type: "password",
+    value: mdp,
+    onChange: e => setMdp(e.target.value),
+    placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+    onKeyDown: e => e.key === "Enter" && go()
+  }), err && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#d47070",
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 11,
+      textAlign: "center",
+      marginTop: 8
+    }
+  }, err), /*#__PURE__*/React.createElement("button", {
+    className: "btnP",
+    style: {
+      width: "100%",
+      marginTop: 20,
+      padding: 11,
+      fontSize: 14
+    },
+    onClick: go
+  }, "\u26CF Acc\xE9der"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginTop: 12
+    }
+  }, [{
+    l: "direction",
+    r: "Direction"
+  }, {
+    l: "gestion",
+    r: "Gestion"
+  }, {
+    l: "jesse",
+    r: "Employé (Or)"
+  }, {
+    l: "adler",
+    r: "Employé (Or)"
+  }].map(x => /*#__PURE__*/React.createElement("button", {
+    key: x.l,
+    onClick: () => setLogin(x.l),
+    style: {
+      flex: 1,
+      background: "rgba(212,160,23,.07)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      color: DQ.muted,
+      fontFamily: "'Barlow Condensed',sans-serif",
+      fontSize: 10,
+      fontWeight: 600,
+      letterSpacing: 1,
+      textTransform: "uppercase",
+      padding: 7,
+      cursor: "pointer"
+    }
+  }, x.r))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12,
+      padding: 10,
+      background: "rgba(212,160,23,.04)",
+      border: `1px solid ${DQ.border}`,
+      borderRadius: 3,
+      fontSize: 11,
+      color: DQ.muted,
+      fontFamily: "'IBM Plex Mono',monospace"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: DQ.accent,
+      letterSpacing: 1,
+      marginBottom: 4
+    }
+  }, "COMPTES D\xC9MO"), /*#__PURE__*/React.createElement("div", null, "direction/admin \xB7 gestion/admin \xB7 jesse/emp \xB7 adler/emp"))));
+}
+
+// ── App ───────────────────────────────────────────
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [page, setPage] = useState(null);
+  const [comptes, setComptes] = useState(COMPTES_INIT);
+  const [roster, setRoster] = useState(ROSTER_FULL);
+  const [decls, setDecls] = useState(DECLS_INIT);
+  const initWeek = {
+    num: "23",
+    date: today(),
+    locked: false,
+    data: ROSTER_FULL.map(r => mkRow(r))
+  };
+  const [weeks, setWeeks] = useState([initWeek]);
+  const [curIdx, setCurIdx] = useState(0);
+  const semaine = weeks[curIdx] || initWeek;
+  function setSemaine(fn) {
+    setWeeks(ws => ws.map((w, i) => i === curIdx ? typeof fn === "function" ? fn(w) : fn : w));
+  }
+  function onLogin(u) {
+    setUser(u);
+    setPage({
+      direction: "equipe",
+      gestion: "equipe",
+      employe: "declarer"
+    }[u.role] || "equipe");
+  }
+  function onLogout() {
+    setUser(null);
+    setPage(null);
+  }
+  function addDecl({
+    employeId,
+    minerai,
+    grade,
+    qte,
+    cartons,
+    ventesCartons
+  }) {
+    // 1. Ajoute la déclaration dans la liste
+    setDecls(p => [...p, {
+      id: Math.max(...p.map(d => d.id)) + 1,
+      date: new Date().toISOString(),
+      employeId,
+      minerai,
+      grade,
+      qte,
+      cartons
+    }]);
+    // 2. Répercute dans le tableau semaine
+    const emp = comptes.find(c => c.id === employeId);
+    if (!emp) return;
+    // Cherche la ligne dans la semaine : match par nom (prénom + nom)
+    const nomComplet = `${emp.prenom} ${emp.nom}`.toLowerCase();
+    setWeeks(ws => ws.map((w, i) => {
+      if (i !== curIdx) return w;
+      let matched = false;
+      const newData = w.data.map(m => {
+        const mNom = (m.nom || "").toLowerCase();
+        // Match si le nom de la ligne contient prénom ET nom de l'employé
+        const match = mNom.includes(emp.prenom.toLowerCase()) && mNom.includes(emp.nom.toLowerCase());
+        if (!match) return m;
+        matched = true;
+        return {
+          ...m,
+          quantite: (m.quantite || 0) + qte,
+          exports: (m.exports || 0) + (ventesCartons || 0)
+        };
+      });
+      return {
+        ...w,
+        data: newData
+      };
+    }));
+  }
+  if (!user) return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*//*style injected via html*/, /*#__PURE__*/React.createElement(Login, {
+    comptes: comptes,
+    onLogin: onLogin
+  }));
+  const rcCol = {
+    direction: DQ.red,
+    gestion: DQ.accent,
+    employe: DQ.blue
+  };
+  const rcLbl = {
+    direction: "Direction",
+    gestion: "Gestion",
+    employe: "Employé"
+  };
+  const pages = {
+    equipe: /*#__PURE__*/React.createElement(PageEquipe, {
+      roster: roster,
+      setRoster: setRoster,
+      semaine: semaine,
+      setSemaine: setSemaine,
+      weeks: weeks,
+      setWeeks: setWeeks,
+      curIdx: curIdx,
+      comptes: comptes,
+      setComptes: setComptes
+    }),
+    archives: /*#__PURE__*/React.createElement(PageArchives, {
+      weeks: weeks
+    }),
+    avertissements: /*#__PURE__*/React.createElement(PageAvertissements, {
+      weeks: weeks
+    }),
+    declarations: /*#__PURE__*/React.createElement(PageDeclarations, {
+      decls: decls,
+      setDecls: setDecls,
+      comptes: comptes
+    }),
+    recap: /*#__PURE__*/React.createElement(PageRecap, {
+      decls: decls,
+      comptes: comptes
+    }),
+    impots: /*#__PURE__*/React.createElement(PageImpots, {
+      semaine: semaine,
+      decls: decls
+    }),
+    tchat: /*#__PURE__*/React.createElement(PageTchat, {
+      user: user,
+      comptes: comptes
+    }),
+    declarer: /*#__PURE__*/React.createElement(PageDeclarer, {
+      user: user,
+      onAdd: addDecl
+    }),
+    "mes-decls": /*#__PURE__*/React.createElement(PageMesDecls, {
+      user: user,
+      decls: decls
+    })
+  };
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*//*style injected via html*/, /*#__PURE__*/React.createElement("div", {
+    className: "dqapp"
+  }, /*#__PURE__*/React.createElement("header", {
+    style: {
+      background: `linear-gradient(135deg,${DQ.darker},${DQ.dark} 50%,${DQ.mid})`,
+      borderBottom: `3px solid ${DQ.accent}`,
+      padding: "10px 24px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      position: "sticky",
+      top: 0,
+      zIndex: 100,
+      boxShadow: "0 4px 24px rgba(0,0,0,.7)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Rajdhani',sans-serif",
+      fontSize: 24,
+      fontWeight: 700,
+      letterSpacing: 5,
+      textTransform: "uppercase",
+      color: DQ.white
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent,
+      opacity: .6,
+      fontSize: 10,
+      verticalAlign: "middle",
+      margin: "0 6px"
+    }
+  }, "\u25C6"), "DAVIS ", /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent
+    }
+  }, "QUARTZ"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: DQ.accent,
+      opacity: .6,
+      fontSize: 10,
+      verticalAlign: "middle",
+      margin: "0 6px"
+    }
+  }, "\u25C6")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      display: "inline-block",
+      padding: "2px 7px",
+      borderRadius: 2,
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: 1,
+      textTransform: "uppercase",
+      background: (rcCol[user.role] || DQ.muted) + "22",
+      color: rcCol[user.role] || DQ.muted,
+      border: `1px solid ${rcCol[user.role] || DQ.muted}44`
+    }
+  }, rcLbl[user.role] || user.role), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: "'IBM Plex Mono',monospace",
+      fontSize: 12,
+      color: DQ.text
+    }
+  }, user.prenom, " ", user.nom), /*#__PURE__*/React.createElement("button", {
+    className: "btnG",
+    style: {
+      fontSize: 11,
+      padding: "5px 10px"
+    },
+    onClick: onLogout
+  }, "\u238B D\xE9co"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      minHeight: "calc(100vh - 56px)"
+    }
+  }, /*#__PURE__*/React.createElement(Sidebar, {
+    user: user,
+    page: page,
+    setPage: setPage,
+    semaine: semaine,
+    roster: roster
+  }), /*#__PURE__*/React.createElement("main", {
+    style: {
+      flex: 1,
+      padding: "18px 22px",
+      overflow: "auto"
+    }
+  }, pages[page] || /*#__PURE__*/React.createElement("div", {
+    className: "empty",
+    style: {
+      padding: 60
+    }
+  }, "Page introuvable")))));
+}
+
+  const domNode = document.getElementById('root');
+  const root = ReactDOM.createRoot(domNode);
+  root.render(React.createElement(App));
+})();
+  </script>
+</body>
+</html>
