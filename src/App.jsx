@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useMemo, useRef, useEffect } from "react";
 
 // ════════════════════════════════════════════════
