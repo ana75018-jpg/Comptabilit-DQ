@@ -1290,7 +1290,7 @@ export default function App(){
   const semaine=weeks[curIdx]||initWeek;
   function setSemaine(fn){setWeeks(ws=>ws.map((w,i)=>i===curIdx?(typeof fn==="function"?fn(w):fn):w));}
 
-  function onLogin(u){setUser(u);setPage({direction:"equipe",gestion:"equipe",employe:"declarer"}[u.role]||"equipe");}
+  function onLogin(u){setUser(u);setPage({direction:"semaine",gestion:"semaine",employe:"declarer"}[u.role]||"semaine");}
   function onLogout(){setUser(null);setPage(null);}
   function addDecl({employeId,minerai,grade,qte,cartons,ventesCartons}){
     // 1. Ajoute la déclaration dans la liste
@@ -1325,6 +1325,7 @@ export default function App(){
   const rcLbl={direction:"Direction",gestion:"Gestion",employe:"Employé"};
 
   const pages={
+    semaine:        <PageSemaine weeks={weeks} setWeeks={setWeeks} curIdx={curIdx} setCurIdx={setCurIdx} roster={roster} setRoster={setRoster} role={user.role}/>,
     equipe:         <PageEquipe roster={roster} setRoster={setRoster} semaine={semaine} setSemaine={setSemaine} weeks={weeks} setWeeks={setWeeks} curIdx={curIdx} comptes={comptes} setComptes={setComptes}/>,
     archives:       <PageArchives weeks={weeks}/>,
     avertissements: <PageAvertissements weeks={weeks}/>,
