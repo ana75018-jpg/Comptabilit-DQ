@@ -6946,6 +6946,7 @@ function renderEmpNotes(){
 
 async function empSubmitDecl(){
   if(!currentEmploye) return;
+  await loadShared();
   const cw = curWeek();
   if(isArchived()){toast('Semaine verrouillée','err');return;}
   const emp = currentEmploye;
