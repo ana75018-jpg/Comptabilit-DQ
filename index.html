@@ -843,7 +843,7 @@ label{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:upperca
         <button class="btn btn-g" id="btn-clear" onclick="clearWeek()" style="font-size:11px;padding:4px 10px">🗑 Vider</button>
         <button class="btn dir-only" onclick="resyncSemaineFromRoster()" style="background:transparent;color:#7dba65;border:1px solid rgba(90,140,74,.4);font-size:11px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:3px;cursor:pointer" title="Resynchroniser catégorie/grade/nom depuis le roster">🔄 Resync roster</button>
         <button class="btn dir-only" onclick="syncQuantiteFromCoffre()" style="background:transparent;color:var(--accent);border:1px solid rgba(212,160,23,.4);font-size:11px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:3px;cursor:pointer" title="Déclare automatiquement la quantité depuis les mouvements du coffre (ajout+retrait, minerai de son pôle)">📦 Sync coffre → Quantité</button>
-        <button class="btn dir-only" id="btn-resync-discord" onclick="forceResyncDiscord()" style="background:transparent;color:#7eb8c9;border:1px solid rgba(126,184,201,.4);font-size:11px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:3px;cursor:pointer" title="Demande au bot de relire tous les messages Discord de la semaine (cartons vendus + dépôts de minerai), puis recalcule quantités et exports">🔄 Relire exports &amp; dépôts</button>
+        <button class="btn dir-only" id="btn-resync-discord" onclick="forceResyncDiscord()" style="background:transparent;color:#7eb8c9;border:1px solid rgba(126,184,201,.4);font-size:11px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:3px;cursor:pointer" title="Relit toutes les données de la semaine (cartons vendus + dépôts de minerai), puis recalcule quantités et exports">🔄 Relire exports &amp; dépôts</button>
       </div>
       <div class="twrap">
         <table id="mainTable">
@@ -4151,13 +4151,13 @@ let _resyncPoll = null;
 async function forceResyncDiscord(){
   if(currentRole!=='Direction'){toast('⚠ Accès Direction uniquement','err');return;}
   if(_resyncPoll){toast('Relecture déjà en cours…','warn');return;}
-  if(!confirm('Relire toutes les données Discord de la semaine active (cartons vendus + dépôts de minerai) ?\n\nÇa peut prendre 1 à 3 minutes.')) return;
-  const resetManual = confirm('Effacer aussi les valeurs corrigées à la main (exports forcés + quantités 🔒) pour repartir uniquement sur les données Discord ?\n\nOK = effacer   ·   Annuler = les garder');
+  if(!confirm('Relire toutes les données de la semaine active (cartons vendus + dépôts de minerai) ?\n\nÇa peut prendre 1 à 3 minutes.')) return;
+  const resetManual = confirm('Effacer aussi les valeurs corrigées à la main (exports forcés + quantités 🔒) pour repartir uniquement sur les données automatiques ?\n\nOK = effacer   ·   Annuler = les garder');
   if(resetManual){
     window._exportOverrides = {};
     window._quantiteOverrides = new Set();
     await save();
-    logActivity('resync', 'Corrections manuelles effacées avant relecture Discord', 'Exports + quantités');
+    logActivity('resync', 'Corrections manuelles effacées avant relecture', 'Exports + quantités');
   }
   const ts = Date.now();
   const { error } = await _sb.from('app_data').upsert({ key:'dq_resync_request', value:{ ts, by: currentEmploye?.nom || 'Direction' } }, { onConflict:'key' });
@@ -4181,11 +4181,11 @@ async function forceResyncDiscord(){
       await loadShared();
       await loadExports();
       render();
-      logActivity('resync', 'Relecture Discord terminée ('+(st.messages||0)+' messages)', 'Exports + dépôts');
+      logActivity('resync', 'Relecture terminée ('+(st.messages||0)+' messages)', 'Exports + dépôts');
       save();
       toast('✓ Relecture terminée ('+(st.messages||0)+' messages relus)','ok');
       const miss = unmatchedDiscordExportNames();
-      if(miss.length) alert('Ces noms ont des cartons vendus sur Discord cette semaine mais ne correspondent à personne dans le tableau :\n\n'
+      if(miss.length) alert('Ces noms ont des cartons vendus cette semaine mais ne correspondent à personne dans le tableau :\n\n'
         + miss.map(m=>'• '+m.nom+' — '+m.total+' cartons').join('\n')
         + '\n\nVérifie que le nom dans le roster est bien le nom RP utilisé en jeu (même orthographe).');
     }catch(e){ console.warn('[RESYNC] poll', e.message); }
@@ -4342,7 +4342,7 @@ function calcDiscordFrais(){
 // Overrides manuels Direction sur les exports Discord
 window._exportOverrides = window._exportOverrides || {};
 function forceOverrideExport(wIdx, casier, currentVal){
-  const newVal = prompt('Forcer la valeur exports pour ce casier (valeur Discord: '+currentVal+') :', currentVal);
+  const newVal = prompt('Forcer la valeur exports pour ce casier (valeur automatique : '+currentVal+') :', currentVal);
   if(newVal===null) return;
   const v = parseInt(newVal)||0;
   window._exportOverrides[String(casier)] = v;
@@ -9812,7 +9812,7 @@ function getWeekNumJS(date){
       <div class="dash-grid">
         <div class="emp-db-card dash-card emp-prod">
           <div class="dash-title"><span class="dash-dot"></span>🎯 Objectifs — semaine <span id="emp-db-semnum" style="color:var(--white)"></span><span id="emp-sem-label" style="display:none"></span>
-            <span class="dash-sync" title="Mis à jour automatiquement depuis le coffre et Discord">🔄 auto</span></div>
+            <span class="dash-sync" title="Mis à jour automatiquement">🔄 auto</span></div>
           <div id="emp-decl-locked" class="dash-locked" style="display:none">🔒 Semaine archivée — valeurs figées</div>
 
           <div class="obj">
@@ -9831,7 +9831,7 @@ function getWeekNumJS(date){
             <!-- conservé pour le code existant (la quantité est déjà affichée dans l'objectif ci-dessus) -->
             <div class="emp-field" id="emp-field-qty"><label id="emp-qty-label"></label><input class="emp-input" type="number" id="emp-qty" readonly disabled value="0"><span id="emp-qty-unit"></span><div id="emp-qty-note"></div></div>
             <div class="emp-field obj-row" id="emp-field-exports">
-              <span class="obj-row-lbl">📦 Cartons vendus <span style="opacity:.6">(exports Discord)</span></span>
+              <span class="obj-row-lbl">📦 Cartons vendus</span>
               <input class="emp-input" type="number" id="emp-exports" readonly disabled value="0">
             </div>
           </div>
